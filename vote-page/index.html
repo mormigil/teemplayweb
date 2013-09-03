@@ -1,6 +1,109 @@
-<!-- index.html -->
-<html lang = "en">
+<!DOCTYPE html>
+<html lang = "en" style="height: 100%;">
 <head>
 	<meta charset = "utf-8">
-	<title>Nu</title>
+	<meta description = "Crowd sourcing game ideas to bring people's favorite ideas to reality.">
+	<title>Competition for top game idea</title>
+	<link rel = stylesheet href = "competition.css" media = "screen and (min-width: 800px)" type = "text/css">
+	<link rel = stylesheet href = "competition_mobile.css" media = "(max-width: 799px)" type = "text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type = "text/javascript" src = "vote.js"></script>
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43267158-1', 'teemplay.com');
+  ga('send', 'pageview');
+
+</script>
 </head>
+<body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=440037019354988";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+	<div id = "wrapper">
+		<div id = "header">
+			<img id = "imgheader" src = "Header.jpg">
+			<p><i>The final winner is Unwind! Following Unwind in second was DNAgent with The Long Run in third. Thank you so much for all the votes and stay tuned for more updates.</i></p>
+			<!--<p><i>Vote once a day for your favorite game idea and we will make it!<br><b><u>1</u></b> days left</i></p>-->
+		</div><!--header-->
+		<div id = "main">
+			<div id = "box1"class = "box notselected">
+				<h2>Zealot's Forge</h2>
+				<p>A 1st Person, team-centered action/building MOBA game that mixes the building functionality of Minecraft with the fast-paced, goal-driven gameplay of League of Legends.</p>
+				<img src = "1.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable1"><button type = "submit" class = "vote" value = "1">Vote</button></span>-->
+				<a href = "page1.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box2"class = "box notselected" class = "vote">
+				<h2>The Flux</h2>
+				<p>Time-based puzzle game. Can't get over a wall? Go back in time, plant a tree by the wall, come back to the present and climb over.</p>
+				<img src = "2.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable2"><button type = "submit" class = "vote" value = "2">Vote</button></span>-->
+				<a href = "page2.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box3"class = "box notselected">
+				<h2>Magic Touch</h2>
+				<p>For those of us who always wanted to be a Wizard - use gestures and touch screen motions to cast spells and battle friends.</p>
+				<img src = "3.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable3"><button type = "submit"class = "vote" value = "3">Vote</button></span>-->
+				<a href = "page3.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box4"class = "box notselected">
+				<h2>The Long Run</h2>
+				<p>Post apocalyptic multi-player gauntlet game where the further you travel into the warzone the better the loot… but if you die on your return trip you lose your spoils. How far will you dare to go?</p>
+				<img src = "4.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable4"><button type = "submit"class = "vote" value = "4">Vote</button></span>-->
+				<a href = "page4.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box5"class = "box selected">
+				<h2>Unwind</h2>
+				<p>Story driven puzzle game with an emphasis on artistic style where the player uncovers his past as he relives experiences and rediscovers who he is.</p>
+				<img src = "5.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable5"><button type = "submit"class = "vote" value = "5">Vote</button></span>-->
+				<a href = "page5.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box6"class = "box notselected">
+				<h2>Annihilator</h2>
+				<p>Fight your friends in a dynamic battle arena, utilizing the terrain to construct your own weapons, and also to create tunnels, traps, and whatever else.</p>
+				<img src = "8.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable6"><button type = "submit"class = "vote" value = "6">Vote</button></span>-->
+				<a href = "page6.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box7"class = "box notselected">
+				<h2>The Alchemist</h2>
+				<p>See what happens when you mix elements together, add heat, or break things apart. A delightful game centered on the joy of discovery. Who knows what secrets combinations you might find with both virtual and real rewards.</p>
+				<img src = "6.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable7"><button type = "submit"class = "vote" value = "7">Vote</button></span>-->
+				<a href = "page7.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box8" class = "box notselected">
+				<h2>DNAgent</h2>
+				<p>You are a living science experiment. Slay waves of monsters, travel through alien worlds and engineer yourself by altering your own DNA!</p>
+				<img src = "7.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable8"><button type = "submit"class = "vote" value = "8">Vote</button></span>-->
+				<a href = "page8.html">More Info</a>
+			</div><!--boxo-->
+			<div id = "box9" class = "box notselected">
+				<h2>Zombie Convoy</h2>
+				<p>Cooperative zombie survival game on wheels. Build and maintain a convoy and band together as a team to increase your chance of survival.</p>
+				<img src = "9.png" height= "100" width= "100"><!--image to show game-->
+				<!--<span id = "changeable9"><button type = "submit"class = "vote" value = "9">Vote</button></span>-->
+				<a href = "page9.html">More Info</a>
+			</div><!--boxo-->
+		</div><!--main-->
+	<div id = "footer">
+		<p>Make sure to follow us on twitter and facebook for updates! Also find a little more information about us <a href="about">here</a></p><a href="https://twitter.com/TeemPlay" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Teemplay</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div class="fb-like" data-href="https://www.facebook.com/pages/Teemplay/190627234327038" data-width="300" data-show-faces="false" data-send="false"></div><img id = "logo" src = "bottom.jpg">
+	</div><!--footer-->
+</div><!--wrapper-->
+</body>
+</html>

@@ -13,9 +13,15 @@ function voted(id){
 				votes[i] = data[i].votes;
 			}
 			for(var i = 0; i<9; i++){
-				percent = Math.round(100*data[i].votes/total);
-				$("#changeable"+(i+1)).append("<p class = 'vote'>"+percent + "%</p>");
+				percent = 100*data[i].votes;
+				percent = percent/total;
+				percent = Math.round(percent*10);
+				percent = percent/10;
+				$("#changeable"+(i+1)).append("<p class = 'voted'>"+percent + "%</p>");
 			}
+			$('#box'+id).addClass("selected");
+			$('.box').addClass('notselected');
+			$('#box'+id).removeClass('notselected');
 		},
 		error: function(data, error){
         console.debug(data); 
@@ -57,11 +63,10 @@ $(document).ready(function(){
 		voted(c_value);
 	}
 });
-
+/*
 $(document).on('click', '.vote', function(){
 	$.post("ideas.php", {id: $(this).val()}, function(data){
-		alert("bullshit");
 	}, "json");
 	alert("Thank you for your vote please come back tomorrow to cast another!");
 	voted($(this).val());
-});
+});*/
