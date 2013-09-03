@@ -63,10 +63,9 @@ $(document).ready(function(){
 		voted(c_value);
 	}
 });
-/*
 $(document).on('click', '.vote', function(){
 	$.post("ideas.php", {id: $(this).val()}, function(data){
 	}, "json");
 	alert("Thank you for your vote please come back tomorrow to cast another!");
 	voted($(this).val());
-});*/
+});
