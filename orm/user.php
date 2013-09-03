@@ -40,8 +40,8 @@ class user{
 		return null;
 	}
 
-	public function authenticate(){
-		return $this->password;
+	public function authenticate($pass){
+		return ($this->password==$pass);
 	}
 
 	//create new user
