@@ -9,7 +9,7 @@ class idea{
 	}
 
 	public static function findAll(){
-		$mysqli = new mysqli("localhost", "root", "", "tbl_ideas");
+		$mysqli = new mysqli("localhost", "root", "", "nu");
 		$result = $mysqli->query("SELECT * FROM tbl_ideas");
 		$ideas = array();
 		if($result){
@@ -27,7 +27,7 @@ class idea{
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost", "root", "", "tbl_ideas");
+		$mysqli = new mysqli("localhost", "root", "", "nu");
 		$result = $mysqli->query("SELECT * FROM tbl_ideas WHERE id = ".$id);
 		if($result){
 		if($result->num_rows == 0){
@@ -50,7 +50,7 @@ class idea{
 	}
 
 	public function update(){
-		$mysqli = new mysqli("localhost", "root", "", "tbl_ideas");
+		$mysqli = new mysqli("localhost", "root", "", "nu");
 		$user_id = $_SERVER['REMOTE_ADDR'];
                 $time = time();
 		$result2 = $mysqli->query("INSERT INTO tbl_records (id, user, vote, timestamp) VALUES (NULL, '$user_id', '$this->id', '$time')");
