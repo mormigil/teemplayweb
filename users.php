@@ -1,5 +1,6 @@
 <?php
 require_once("orm/user.php");
+require("phpass/PasswordHash.php");
 /*If I am getting a user then either I want to display that user's
 information - read or delete their information - delete*/
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
@@ -18,8 +19,13 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			exit();
 		}
 		//create salt and salt password
-		$random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
-		$password = hash('sha512', $_POST['password'].$random_salt);
+		$hasher = new PasswordHash(8, false);
+		// In this case, the password is retrieved from a form input
+		$password = $_POST["password"];
+		// Passwords should never be longer than 72 characters to prevent DoS attacks
+
+		// The $hash variable will contain the hash of the password
+		$hash = $hasher->HashPassword($password);
 		if(empty($_POST['email'])){
 			$user = user::findByName($_POST['username']);
 			if(is_null($user)){
@@ -28,21 +34,26 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				exit();
 			}
 			else{
-				
-				if($user->authenticate($password)){
-					$user_browser = $_SERVER['HTTP_USER_AGENT']; // Get the user-agent string of the user.
-					$username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $_POST('username')); // XSS protection as we might print this value
-					$login_string = hash('sha512', $password.$user_browser);
-					setcookie($username, $login_string, strtotime('time+06:00'), '/');
-					header("Content-type: application/json");
-					print(json_encode($user->getJSON()));
-					exit();
+				if (strlen($hash) >= 20) {
+					$stored_hash = "*";
+					$stored_hash = $user->authenticate();
+					$check = $hasher->CheckPassword($password, $stored_hash);
+					if($check){
+						$user_browser = $_SERVER['HTTP_USER_AGENT']; // Get the user-agent string of the user.
+						$username = mysql_real_escape_string($_POST['username']); // XSS protection as we might print this value
+						$login_string = hash('sha512', $hash.$user_browser);
+						setcookie($username, $login_string, strtotime('time+06:00'), '/');
+						header("Content-type: application/json");
+						print(json_encode($user->getJSON()));
+						exit();
+					}
+					else{
+						header("HTTP/1.1 400 Bad Request");
+						print("Authentication denied incorrect password");
+					}
+				} else {
+					die("encryption failure");
 				}
-				else{
-					header("HTTP/1.1 400 Bad Request");
-					print("Authentication denied incorrect password");
-				}
-
 			}
 			die();
 		}
@@ -51,10 +62,17 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			print("Invalid email address");
 			exit();
 		}
-		$user = user::createUser(NULL, $_POST['username'], $password, $_POST['level'], 
-			$_POST['description'], $_POST['votes'], $random_salt, $_POST['email']);
+		if(strlen($hash)>=20){
+		$user = user::createUser(NULL, $_POST['username'], $hash, $_POST['level'], 
+			$_POST['description'], $_POST['votes'], $_POST['email']);
 		header("Content-type: application/json");
 		print(json_encode($user->getJSON()));
 		exit();
 	}
+	else{
+		die("encryption failure");
+	}
+	}
 }
+
+//zbarryte
