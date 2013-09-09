@@ -4,8 +4,58 @@ require("phpass/PasswordHash.php");
 /*If I am getting a user then either I want to display that user's
 information - read or delete their information - delete*/
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
-
+	if(!isset($_SERVER['PATH_INFO'])){
+		if(!empty($_GET)){
+			if(empty($_GET['username'])){
+				header("HTTP/1.1 400 Bad Request");
+				print("There must be a user we are accessing");
+				exit();
+			}
+			$user = user::findByName($_GET['username']);
+			if(is_null($user)){
+				header("HTTP/1.1 400 Bad Request");
+				print("user name does not exist");
+				exit();
+			}
+			if(empty($_GET['secret'])){
+				header("Content-type: application/json");
+				print(json_encode($user->getJSON()));
+				exit();
+			}
+			else{
+				$login_secret = $_GET['secret'];
+				$user_browser = $_SERVER['HTTP_USER_AGENT'];
+				$hash = $user->getPass();
+				$login_string = hash('sha512', $hash.$user_browser);
+				if($login_secret == $login_string){
+					$json_data = array();
+					$json_data['pass'] = 'success';
+					header("Content-type: application/json");
+					print(json_encode($json_data));
+					exit();
+				}
+				header("HTTP/1.1 400 Bad Request");
+				print("invalid cookie");
+				exit();
+			}
+		}
+	} else {
+		$username = substr($_SERVER['PATH_INFO'], 1);
+		$user = user::findByName($_GET['username']);
+		if(is_null($user)){
+			header("HTTP/1.1 400 Bad Request");
+			print("user name does not exist");
+			exit();
+		}
+		else{
+			header("Content-type: application/json");
+			print(json_encode($user->getJSON()));
+			exit();
+		}
+	}
 }
+
+//for post i want to post new users and post their login
 else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_POST)){
 		if(empty($_POST['username'])){
@@ -36,13 +86,14 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			else{
 				if (strlen($hash) >= 20) {
 					$stored_hash = "*";
-					$stored_hash = $user->authenticate();
+					$stored_hash = $user->getPass();
 					$check = $hasher->CheckPassword($password, $stored_hash);
 					if($check){
 						$user_browser = $_SERVER['HTTP_USER_AGENT']; // Get the user-agent string of the user.
 						$username = mysql_real_escape_string($_POST['username']); // XSS protection as we might print this value
-						$login_string = hash('sha512', $hash.$user_browser);
-						setcookie($username, $login_string, strtotime('time+06:00'), '/');
+						$login_string = hash('sha512', $stored_hash.$user_browser);
+						setcookie("username", $username, strtotime('time+06:00'), '/');
+						setcookie("a", $login_string, strtotime('time+06:00'), '/');
 						header("Content-type: application/json");
 						print(json_encode($user->getJSON()));
 						exit();
@@ -74,5 +125,3 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	}
 	}
 }
-
-//zbarryte

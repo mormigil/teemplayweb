@@ -38,10 +38,6 @@ class user{
 		return null;
 	}
 
-	public function authenticate(){
-		return ($this->password);
-	}
-
 	//create new user
 	public static function createUser($id, $username, $password, $level, $description, $votes, $email){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
@@ -72,7 +68,9 @@ class user{
 		$prep->bind_param('s', $id);
 		$prep->execute();
 		$result = $prep->get_result();
-		printf("Errormessage: %s\n", $mysqli->error);
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
 		if($result){
 		if($result->num_rows == 0){
 			return null;
@@ -89,12 +87,16 @@ class user{
 		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
 		$query = "UPDATE users SET username = ?, password = ?, level = ?, description = ?, votes = ?,  email = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);
-		$prep->bind_param('sssssss', $id, $username, $password, $level, $description, $votes, $email);
+		$prep->bind_param('sssssss', $this->username, $this->password, $this->level, $this->description, $this->votes, $this->email, $this->id);
 		$prep->execute();
 		$result = $prep->get_result();
-		printf("Errormessage: %s\n", $mysqli->error);
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
 		return $result;
 	}
+
+	//read
 
 	public function getJSON(){
 		$json_rep = array();
@@ -107,5 +109,10 @@ class user{
 		$json_rep['email'] = $this->email;
 		return $json_rep;
 	}
+
+	public function getPass(){
+		return ($this->password);
+	}
+
 }
 ?>

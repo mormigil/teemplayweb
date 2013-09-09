@@ -1,0 +1,4 @@
+//notes
+write ajax functions within each other to keep variables present because they only last during the function.
+make sure that if there is a parser error only json is in the response with no other text.
+:: calls must be to static functions

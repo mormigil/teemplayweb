@@ -39,7 +39,9 @@ class idea{
 		':description' => $description, ':votes' => $votes, ':salt' => $salt, ':email' => $email);
 		$prep = $mysqli->prepare($query);
 		$result = $prep->execute($query_params);
-		printf("Errormessage: %s\n", $mysqli->error);
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
 		return $result;
 	}
 
@@ -51,7 +53,9 @@ class idea{
 		$query_params = array(':id'=>$id);
 		$prep = $mysqli->prepare($query);
 		$result = $prep->execute($query_params);
-		printf("Errormessage: %s\n", $mysqli->error);
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
 		if($result){
 		if($result->num_rows == 0){
 			return null;
@@ -70,7 +74,9 @@ class idea{
 		':description' => $description, ':votes' => $votes, ':salt' => $salt, ':email' => $email);
 		$prep = $mysqli->prepare($query);
 		$result = $prep->execute($query_params);
-		printf("Errormessage: %s\n", $mysqli->error);
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
 		return $result;
 	}
 

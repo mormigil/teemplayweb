@@ -1,51 +1,68 @@
 <?php
-/*notes -130 to DNAgent since they got a lot of fake votes over 50 from same ip: 60.228.84.197
-+100 to unwind to help it out since it seems actually valid
--80 from the flux since clearly a dude voted 80 times
--40 more from the flux
--110 from the long run since dude voted 118 times
-
--500 to DNAgent
--1200 to DNAgent
-
--300 to Long Run
--610 to Long Run total*/
 class idea{
 	private $id;
+	private $userid;
+	private $title;
+	private $tweet;
+	private $description;
+	private $genre;
 	private $votes;
+	private $time;
 
-	private function __construct($id, $votes){
+	private function __construct($id, $userid, $title, $tweet, $description, $genre, $votes, $time){
 		$this->id = $id;
+		$this->userid = $userid;
+		$this->title = $title;
+		$this->tweet = $tweet;
+		$this->description = $description;
+		$this->genre = $genre;
 		$this->votes = $votes;
+		$this->time = $time;
 	}
 
-	public static function findAll(){
-		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
-		$result = $mysqli->query("SELECT * FROM tbl_ideas");
-		$ideas = array();
-		if($result){
-		if($result->num_rows == 0){
+	public static function createIdea($id, $userid, $title, $tweet, $description, $genre, $votes, $time){
+		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$query = "INSERT INTO ideas (id, userid, title, tweet, description, genre, votes, time) VALUES(
+			?,?,?,?,?,?,?,?)";
+		try{
+			$prep = $mysqli->prepare($query);
+			$prep->bind_param('ssssssss', $id, $userid, $title, $tweet, $description, $genre, $votes, $time);
+			if($prep->execute()){
+				$id = $mysqli->insert_id;
+				return new Idea($id, $userid, $title, $tweet, $description, $genre, $votes, $time);
+			}
 			return null;
 		}
-		for($i=1;$i<=9;$i++){
-			$idea_info = $result->fetch_array();
-			if($idea_info){
-				$ideas[] = idea::findByID($idea_info[0]);
-			}
+		catch(PDOException $pdo){
+			printf("Errormessage: %s\n", $mysqli->error);
+			die("failed to run query");
 		}
-		}
-		return $ideas;
+		
+	}
+
+	public static function findRecent(){
+		
+	}
+
+	public static function findExpiring(){
+
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
-		$result = $mysqli->query("SELECT * FROM tbl_ideas WHERE id = ".$id);8WhGjgHaf8LS
+		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$query = "SELECT * FROM ideas WHERE id = ?";
+		$prep = $mysqli->prepare($query);
+		$prep->bind_param('s', $id);
+		$prep->execute();
+		$result = $prep->get_result();
+		printf("Errormessage: %s\n", $mysqli->error);
 		if($result){
 		if($result->num_rows == 0){
 			return null;
 		}
 		$idea_info = $result->fetch_array();
-		return new idea(intval($idea_info['id']), intval($idea_info['votes']));
+		return new Idea($idea_info['id'], $idea_info['userid'], $idea_info['title'], $idea_info['tweet'],
+			$idea_info['description'], $idea_info['genre'], $idea_info['votes'], $idea_info['time']);
 		}
 		return null;
 	}
@@ -60,12 +77,22 @@ class idea{
 		return $this->update();
 	}
 
+	public function chgInfo($title, $tweet, $description, $genre){
+		$this->title = empty($title) ? $this->title : $title;
+		$this->tweet = empty($tweet) ? $this->tweet : $tweet;
+		$this->description = empty($description) ? $this->description : $description;
+		$this->genre = empty($genre) ? $this->genre : $genre;
+		return $this->update();
+	}
+
 	public function update(){
 		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
-		$user_id = $_SERVER['REMOTE_ADDR'];
-		$result2 = $mysqli->query("INSERT INTO tbl_records (id, user, vote) VALUES (NULL, '$user_id', '$this->id')");
-		printf("Errormessage: %s\n", $mysqli->error);
-		$result = $mysqli->query("UPDATE tbl_ideas SET votes = ". $this->votes ." WHERE id = ". $this->id);
+		$query = "UPDATE idea SET userid = ?, title = ?, tweet = ?, description = ?, genre = ?,  
+			votes = ?, time = ? WHERE id = ?";
+		$prep = $mysqli->prepare($query);
+		$prep->bind_param('ssssssss', $this->userid, $this->title, $this->tweet, $this->description, $this->genre, $this->votes, $this->time, $this->id);
+		$prep->execute();
+		$result = $prep->get_result();
 		printf("Errormessage: %s\n", $mysqli->error);
 		return $result;
 	}
@@ -73,7 +100,13 @@ class idea{
 	public function getJSON(){
 		$json_rep = array();
 		$json_rep['id'] = $this->id;
+		$json_rep['userid'] = $this->userid;
+		$json_rep['title'] = $this->title;
+		$json_rep['tweet'] = $this->tweet;
+		$json_rep['description'] = $this->description;
+		$json_rep['genre'] = $this->genre;
 		$json_rep['votes'] = $this->votes;
+		$json_rep['time'] = $this->time;
 		return $json_rep;
 	}
 }
