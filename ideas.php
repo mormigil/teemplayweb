@@ -26,12 +26,24 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
 		//if recent delimiter is set then display most recently submitted ideas
 		if(isset($_get['recent'])){
-
+			$ideas = idea::findRecent();
+			$idea_ids = array();
+			foreach($ideas as $t){
+				$idea_ids[] = $t->getJSON();
+			}
+			header("Content-type: application/json");
+			print(json_encode($idea_ids));
 			exit();
 		}
 
 		//if no search delimiters are set then display ideas closest to expiring
-
+		$ideas = idea::findExpiring();
+		$idea_ids = array();
+		foreach($ideas as $t){
+			$idea_ids[] = $t->getJSON();
+		}
+		header("Content-type: application/json");
+		print(json_encode($idea_ids));
 		#display expiring code
 		exit();
 

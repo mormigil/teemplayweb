@@ -2,3 +2,5 @@
 write ajax functions within each other to keep variables present because they only last during the function.
 make sure that if there is a parser error only json is in the response with no other text.
 :: calls must be to static functions
+
+make sure to set background-attachment to fixed for full page backgrounds it is the key to not being weird with scrolling

@@ -40,12 +40,40 @@ class idea{
 		
 	}
 
-	public static function findRecent(){
-		
+	public static function findExpiring(){
+		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$query = "SELECT id FROM ideas ORDER BY time";
+		$prep = $mysqli->prepare($query);
+		$prep->execute();
+		$result = $prep->get_result();
+		$ideas = array();
+		if($result){
+			for($i=1;$i<=10;$i++){
+				$next_row = $result->fetch_row();
+				if($next_row){
+					$ideas = idea::findByID($next_row[0]);
+				}
+			}
+		}
+		return $ideas;
 	}
 
-	public static function findExpiring(){
-
+	public static function findRecent(){
+		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$query = "SELECT id FROM ideas ORDER BY time desc";
+		$prep = $mysqli->prepare($query);
+		$prep->execute();
+		$result = $prep->get_result();
+		$ideas = array();
+		if($result){
+			for($i=1;$i<=10;$i++){
+				$next_row = $result->fetch_row();
+				if($next_row){
+					$ideas = idea::findByID($next_row[0]);
+				}
+			}
+		}
+		return $ideas;
 	}
 
 	public static function findByID($id){
@@ -55,7 +83,9 @@ class idea{
 		$prep->bind_param('s', $id);
 		$prep->execute();
 		$result = $prep->get_result();
-		printf("Errormessage: %s\n", $mysqli->error);
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
 		if($result){
 		if($result->num_rows == 0){
 			return null;

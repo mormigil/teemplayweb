@@ -9,8 +9,8 @@ class idea{
 	}
 
 	public static function findAll(){
-		$mysqli = new mysqli("localhost", "root", "", "nu");
-		$result = $mysqli->query("SELECT * FROM tbl_ideas");
+		$mysqli = new mysqli("localhost", "teemplay_ankhar", "8WhGjgHaf8LS", "teemplay_stories");
+		$result = $mysqli->query("SELECT * FROM tbl_stories");
 		$ideas = array();
 		if($result){
 		if($result->num_rows == 0){
@@ -27,8 +27,8 @@ class idea{
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost", "root", "", "nu");
-		$result = $mysqli->query("SELECT * FROM tbl_ideas WHERE id = ".$id);
+		$mysqli = new mysqli("localhost", "teemplay_ankhar", "8WhGjgHaf8LS", "teemplay_stories");
+		$result = $mysqli->query("SELECT * FROM tbl_stories WHERE id = ".$id);
 		if($result){
 		if($result->num_rows == 0){
 			return null;
@@ -50,10 +50,10 @@ class idea{
 	}
 
 	public function update(){
-		$mysqli = new mysqli("localhost", "root", "", "nu");
+		$mysqli = new mysqli("localhost", "teemplay_ankhar", "8WhGjgHaf8LS", "teemplay_stories");
 		$user_id = $_SERVER['REMOTE_ADDR'];
                 $time = time();
-		$result2 = $mysqli->query("INSERT INTO tbl_records (id, user, vote, timestamp) VALUES (NULL, '$user_id', '$this->id', '$time')");
+		$result2 = $mysqli->query("INSERT INTO tbl_stories (id, user, vote, timestamp) VALUES (NULL, '$user_id', '$this->id', '$time')");
 		$result = $mysqli->query("UPDATE tbl_ideas SET votes = ". $this->votes ." WHERE id = ". $this->id);
 		return $result;
 	}

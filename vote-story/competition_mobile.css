@@ -1,11 +1,7 @@
 /*competition.css*/
-html{
-	min-height: 100%;
-}
 
 body{
-
-background-color: rgba(238,209,180,1);
+	background-color: rgba(238,209,180,1);
 background-image: -moz-linear-gradient(-45deg, rgba(238,209,180,1) 0%, rgba(238,209,180,1) 52%, rgba(180,209,238,1) 87%, rgba(180,209,238,1) 100%) ;
 background-image: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(238,209,180,1)), color-stop(52%, rgba(238,209,180,1)), color-stop(87%, rgba(180,209,238,1)), color-stop(100%, rgba(180,209,238,1)));
 background-image: -webkit-linear-gradient(-45deg, rgba(238,209,180,1) 0%, rgba(238,209,180,1) 52%, rgba(180,209,238,1) 87%, rgba(180,209,238,1) 100%);
@@ -23,91 +19,177 @@ background-repeat: no-repeat;
 
 
 	font-family: arial;
+
 	margin: 0;
-	height: 95%;
-	width: 100%;
+
+	height: 100%;
+
 }
+
+
 
 #wrapper{
+
 	height: 100%;
+
 }
+
+
 
 #main{
-	height: 90%;
+
+	min-height: 100%;
+
+	height: auto !important;
+
+	height: 100%;
+
 }
+
+
 
 .box{
-	background-color: #EEEEB4;
-	float: left;
+
+	float: none;
+
 	padding: .5% 1% .5% 1%;
-	width: 40%;
-	height: 40%;
+
+	height: 300px;
+
 	margin-left: 3%;
+
 	margin-right: 3%;
+
 	margin-bottom: 2%;
+
 	border-color: #010501;
+
 	border-width: 2px;
+
 	border-radius: 20px 20px 20px 20px;
+
 	-moz-box-shadow:    5px 6px 5px 6px #888;
+
   	-webkit-box-shadow: 5px 6px 5px 6px #888;
+
   	box-shadow:         5px 6px 5px 6px #888;
+
   	overflow: hidden;
+
 }
+
+
 
 .box > *{
+
 	display: block;
+
 	margin-left: auto;
+
 	margin-right: auto;
+
 	text-align: center;
+
 }
+
+
 
 .box > p {
+
+	font-size: 14px;
+
 	float: left;
+
 	width: 70%;
+
 	text-align: left;
+
 }
+
+
 
 .box > img{
+
 	margin-left: 5%;
+
 	width: 25%;
+
 	float: left;
+
 }
+
+
 
 .box > a, .vote, .voted{
+
 	float: left;
+
 	margin-left: 15%;
+
 	margin-top: 5%;
+
 	margin-bottom: 0%;
+
 	width: 30%;
+
 }
+
+
 
 #changeable1{
+
 	margin-top: 20px;
+
 }
+
+
 
 #footer{
-	height: 10%;
+
+	height: 150px;
+
 	text-align: center;
+
 }
 
+
+
 #header{
+
 	text-align: center;
+
 	font-size: 18px;
+
 }
 
 #imgheader{
+
 	width: 50%;
+
 }
+
+
 
 .selected{
+
 	background-color: #B4EEB4;
+
 }
+
+
 
 .notselected{
+
 	background-color: #EEB4B4;
+
 }
 
+
+
 #logo{
+
 	margin-bottom: -.75%;
+
 	width: 3%;
+
 }

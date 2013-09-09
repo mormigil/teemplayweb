@@ -1,0 +1,65 @@
+/*competition.css*/
+html{
+	/* Note: This gradient may render differently in browsers that don't support the unprefixed gradient syntax */
+
+/* IE10 Consumer Preview */ 
+background-image: -ms-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%);
+
+/* Mozilla Firefox */ 
+background-image: -moz-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%);
+
+/* Opera */ 
+background-image: -o-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%);
+
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #EDE275), color-stop(1, #E8E8E8));
+
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%);
+
+/* W3C Markup, IE10 Release Preview */ 
+background-image: linear-gradient(to bottom right, #EDE275 0%, #E8E8E8 100%);
+
+background: -ms-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%) no-repeat center center fixed;
+background: -moz-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%) no-repeat center center fixed;
+background: -o-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%) no-repeat center center fixed;
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #EDE275), color-stop(1, #E8E8E8)) no-repeat center center fixed;
+background: -webkit-linear-gradient(top left, #EDE275 0%, #E8E8E8 100%) no-repeat center center fixed;
+background: linear-gradient(to bottom right, #EDE275 0%, #E8E8E8 100%) no-repeat center center fixed;
+
+-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body{
+	font-family: arial;
+}
+
+#header{
+	text-align: center;
+}
+
+.secondheader{
+	width: 30%;
+	height: 400px;
+}
+
+#description{
+	display: block;
+	margin: 0px auto;
+	width: 60%;
+	border-style: solid;
+	border-color: black;
+	border-width: 2px;
+}
+
+#description > p{
+	margin: 3% 5% 3% 5%;
+}
+
+#description > a {
+    float: right;
+    margin: -3% 5% 0 0;
+}
