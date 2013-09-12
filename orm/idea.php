@@ -40,7 +40,7 @@ class idea{
 		
 	}
 
-	public static function findExpiring(){
+	public static function findExpiring($start){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "SELECT id FROM ideas ORDER BY time";
 		$prep = $mysqli->prepare($query);
@@ -48,17 +48,17 @@ class idea{
 		$result = $prep->get_result();
 		$ideas = array();
 		if($result){
-			for($i=1;$i<=10;$i++){
+			for($i=$start;$i<($start+10);$i++){
 				$next_row = $result->fetch_row();
 				if($next_row){
-					$ideas = idea::findByID($next_row[0]);
+					$ideas[] = idea::findByID($next_row[0]);
 				}
 			}
 		}
 		return $ideas;
 	}
 
-	public static function findRecent(){
+	public static function findRecent($start){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "SELECT id FROM ideas ORDER BY time desc";
 		$prep = $mysqli->prepare($query);
@@ -66,10 +66,10 @@ class idea{
 		$result = $prep->get_result();
 		$ideas = array();
 		if($result){
-			for($i=1;$i<=10;$i++){
+			for($i=$start;$i<($start+10);$i++){
 				$next_row = $result->fetch_row();
 				if($next_row){
-					$ideas = idea::findByID($next_row[0]);
+					$ideas[] = idea::findByID($next_row[0]);
 				}
 			}
 		}
@@ -125,6 +125,34 @@ class idea{
 		$result = $prep->get_result();
 		printf("Errormessage: %s\n", $mysqli->error);
 		return $result;
+	}
+
+	public function getTitle(){
+		return $this->title;
+	}
+
+	public function getUser(){
+		return $this->userid;
+	}
+
+	public function getTweet(){
+		return $this->tweet;
+	}
+
+	public function getDescription(){
+		return $this->description;
+	}
+
+	public function getGenre(){
+		return $this->genre;
+	}
+
+	public function getVotes(){
+		return $this->votes;
+	}
+
+	public function getTime(){
+		return $this->time;
 	}
 
 	public function getJSON(){

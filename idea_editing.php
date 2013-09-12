@@ -12,8 +12,7 @@ require("loggedin.php");
 </head>
 <body>
 	<div id = "wrapper">
-		<div id = "main">
-				Title:<br>
+	<div id = "main">Title:<br>
     <input type="text" id="title" value="">
     <br><br>
     Tweet:<br>
@@ -24,7 +23,7 @@ require("loggedin.php");
     <br><br>
     <input type="text" id="genre" value="">
     <br><br>
-    <input type="submit" id = "gameidea" value="Imagine"> 
+    <input type="submit" id = "changeidea" value="Imagine"> 
 		</div><!--main-->
 	</div><!--wrapper-->
 </body>

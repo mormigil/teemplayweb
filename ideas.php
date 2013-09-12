@@ -2,6 +2,7 @@
 require_once("orm/idea.php");
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
 	if(empty($_SERVER['PATH_INFO'])){
+		//find a specific idea
 		if(!empty($_GET['id'])){
 			$idea = idea::findByID($_GET['id']);
 			if($idea == null){
@@ -26,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
 		//if recent delimiter is set then display most recently submitted ideas
 		if(isset($_get['recent'])){
-			$ideas = idea::findRecent();
+			$ideas = idea::findRecent(0);
 			$idea_ids = array();
 			foreach($ideas as $t){
 				$idea_ids[] = $t->getJSON();
@@ -37,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		}
 
 		//if no search delimiters are set then display ideas closest to expiring
-		$ideas = idea::findExpiring();
+		$ideas = idea::findExpiring(0);
 		$idea_ids = array();
 		foreach($ideas as $t){
 			$idea_ids[] = $t->getJSON();
@@ -48,6 +49,16 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		exit();
 
 	} else {
+		$idea_id = intval(substr($_SERVER['PATH_INFO'], 1));
+		$idea = idea::findByID($idea_id);
+		if($idea==null){
+			header("HTTP/1.1 404 Not Found");
+			print("Invalid idea url");
+			exit();
+		}
+		header("Content-type: application/json");
+		print(json_encode($idea->getJSON()));
+		exit();
 
 	}
 } else if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -87,6 +98,11 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			if($idea == null){
 				header("HTTP/1.1 400 Bad Request");
 				print("bad idea id");
+				exit();
+			}
+			if($_POST['userid']!=$idea->getUser()){
+				header("HTTP/1.1 403 Forbidden");
+				print("Must be same user who submitted to edit");
 				exit();
 			}
 			$title = (empty($_POST['title'])) ? NULL : $_POST['title'];
