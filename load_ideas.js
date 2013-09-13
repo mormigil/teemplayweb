@@ -1,8 +1,40 @@
+function loadIdeas(user){
+	$.get("users.php", {username:user}, function(data){
+		user_id = parseInt(data['id'], 10);
+		$.get("votes.php", {userid:user_id}, function(data){
+			idea_ids = data;
+			$.get("ideas.php", function(data){
+				for(var i = 0; i<data.length; i++){
+					for(var j = 0; j<idea_ids.length; j++){
+						if(data[i]==idea_ids[j]){
+							$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
+							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
+							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
+							data[i]["description"]+"</p></div><div class = 'vote'><button value = "+data[i]['id']+
+							"class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button></div></div>");
+							break;
+						}
+					}
+					if(j==idea_ids.length){
+						$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
+						"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
+						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
+						data[i]["description"]+"</p></div><div class = 'vote'><button value = "+data[i]['id']+
+						"class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button></div></div>");
+					}
+				}
+			}, 'json');
+		}, 'json');
+	}, 'json');
+}
+
 $(document).ready(function(){
 	var pathArray = window.location.pathname.split('/');
 	var id = pathArray[pathArray.length-1];
 	var user = getCookie('username');
+	loadIdeas(user);
 	//request without a path query
+	/*
 	if(id == 'idea_viewing.php'){
 		$.ajax({
 			type: 'GET',
@@ -41,9 +73,9 @@ $(document).ready(function(){
 			}
 		});
 	}
-	checkVoted(user);
+	checkVoted(user);*/
 });
-
+/*
 function checkVoted(user){
 	$.ajax({
 		type: 'GET',
@@ -61,7 +93,7 @@ function checkVoted(user){
 		}
 
 	});
-}
+}*/
 
 function getCookie(c_name){
 	var c_value = document.cookie;

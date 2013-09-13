@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			exit();
 		}
 		//find the vote of userid on ideaid
-		else if(!empty($_GET['ideaid']){
+		else if(!empty($_GET['ideaid'])){
 			$vote = vote::findByIdeaAndUser($_GET['ideaid'], $_GET['userid']);
 			if($vote == null){
 				header("HTTP/1.1 400 Bad Request");
