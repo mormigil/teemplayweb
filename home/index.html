@@ -16,38 +16,38 @@
 
   ga('create', 'UA-43267158-1', 'teemplay.com');
   ga('send', 'pageview');
-
+ 
 </script>
 </head>
-<body class = "bkg">
+
+<body>
 	<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=440037019354988";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+
 
 <div id = "wrapper">
 
-<div class = "bar"><!--top bar-->
-	<div><!--login-->
-	<a href = "login.html">
-		<span id = "login" class = "btn">	
-			<p>LOGIN</p>
+<div class = "bar"> <!--top bar-->
+	<div> <!--title image-->
+		<span>
+			<img id = "bar-item" src="../assets/TeemPlay Logo-06.png">
 		</span>
-	</a>
-	</div><!--login-->
-</div><!--top bar-->
+	
+		<a href = "login.html">
+			<span id = "login" class = "btn">	
+				<p>LOGIN</p>
+			</span>
+		</a>
+	</div> <!--login-->
+</div> <!--top bar-->
 
+<br></br>
 <br></br>
 
 <div> <!--video-->
-	<video class = "box" poster="teemplay_intro.jpg" width="640" height="480" controls>
+	<video class = "box" poster="../assets/TeemPlay Logo-01-clipped.png" width="640" height="480" controls>
   		<source src="teemplay_intro.ogg" type="video/ogg">
 	</video> 
-	<!--<embed src="teemplay_intro.swf" height="320" width="240">-->
+	<!-- <embed src="teemplay_intro.swf" height="320" width="240"> -->
 </div><!--video-->
 
 <br></br>
@@ -59,9 +59,18 @@
 		</span>
 	</a>
 </div><!--signup-->
+
 	<div id = "footer">
 		<p>Make sure to follow us on twitter and facebook for updates! Also find a little more information about us <a href="about">here</a></p><a href="https://twitter.com/TeemPlay" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Teemplay</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=440037019354988";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
 <div class="fb-like" data-href="https://www.facebook.com/pages/Teemplay/190627234327038" data-width="300" data-show-faces="false" data-send="false"></div><img id = "logo" src = "bottom.jpg">
 	</div><!--footer-->
 
