@@ -1,10 +1,10 @@
 <?php
 if(isset($_COOKIE['username'], $_COOKIE['a'])){
-	$username = $_COOKIE['username'];
+	$userid = $_COOKIE['username'];
 	$login_string = $_COOKIE['a'];
 
 	$curl = curl_init();
-	$url = 'http://localhost/teemplayweb/users.php?username='.$username.'&secret='.$login_string;
+	$url = 'http://localhost/teemplayweb/users.php?username='.$userid.'&secret='.$login_string;
 	$browser = $_SERVER['HTTP_USER_AGENT'];
 	curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,

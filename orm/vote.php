@@ -1,5 +1,5 @@
 <?php
-class idea{
+class vote{
 	private $id;
 	private $ideaid;
 	private $userid;
@@ -13,7 +13,7 @@ class idea{
 	}
 
 	public static function createVote($id, $ideaid, $userid){
-		$vote = findByIdeaAndUser($ideaid, $userid);
+		$vote = vote::findByIdeaAndUser($ideaid, $userid);
 		if(empty($vote)){
 			$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 			$query = "INSERT INTO vote (id, ideaid, userid) VALUES(?,?,?)";

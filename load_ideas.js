@@ -1,17 +1,17 @@
-function loadIdeas(user){
-	$.get("users.php", {username:user}, function(data){
-		user_id = parseInt(data['id'], 10);
-		$.get("votes.php", {userid:user_id}, function(data){
-			idea_ids = data;
+function loadIdeas(user, id){
+	user_id = user;
+	$.get("http://localhost/teemplayweb/votes.php", {userid:user_id}, function(data){
+		idea_ids = data;
+		if(id == 'idea_viewing.php'){
 			$.get("ideas.php", function(data){
 				for(var i = 0; i<data.length; i++){
 					for(var j = 0; j<idea_ids.length; j++){
-						if(data[i]==idea_ids[j]){
+						if(data[i]['id']==idea_ids[j]['id']){
 							$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
-							data[i]["description"]+"</p></div><div class = 'vote'><button value = "+data[i]['id']+
-							"class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button></div></div>");
+							data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
+							"' class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button></div></div>");
 							break;
 						}
 					}
@@ -19,20 +19,48 @@ function loadIdeas(user){
 						$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 						"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
-						data[i]["description"]+"</p></div><div class = 'vote'><button value = "+data[i]['id']+
-						"class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button></div></div>");
+						data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
+						"' class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button></div></div>");
 					}
 				}
 			}, 'json');
-		}, 'json');
+		}
+		else{
+			$.get('http://localhost/teemplayweb/ideas.php/'+id, function(data){
+			for(var j = 0; j<idea_ids.length; j++){
+					if(data['id']==idea_ids[j]['id']){
+						$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
+						"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
+						"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
+						data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
+						"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button></div></div>");
+						break;
+					}
+				}
+				if(j==idea_ids.length){
+					$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
+					"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
+					"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
+					data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
+					"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button></div></div>");
+				}
+			}, 'json');
+		}
 	}, 'json');
 }
+
+$(document).on("click", ".vote", function(){
+	var userid = getCookie('username');
+	$.post("votes.php", {ideaid: $(this).val(), userid: userid}, function(){
+		alert("voted!");
+	});
+});
 
 $(document).ready(function(){
 	var pathArray = window.location.pathname.split('/');
 	var id = pathArray[pathArray.length-1];
 	var user = getCookie('username');
-	loadIdeas(user);
+	loadIdeas(user, id);
 	//request without a path query
 	/*
 	if(id == 'idea_viewing.php'){
@@ -75,25 +103,6 @@ $(document).ready(function(){
 	}
 	checkVoted(user);*/
 });
-/*
-function checkVoted(user){
-	$.ajax({
-		type: 'GET',
-		url: 'users.php',
-		data: {username: user},
-		dataType: 'json',
-		success: function(data){
-			user_id = parseInt(data['id'], 10);
-			var idea_ids = array();
-			
-		},
-		error: function(data, error){
-			console.debug(data);
-			console.debug(error);
-		}
-
-	});
-}*/
 
 function getCookie(c_name){
 	var c_value = document.cookie;

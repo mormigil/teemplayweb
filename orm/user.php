@@ -110,6 +110,10 @@ class user{
 		return $json_rep;
 	}
 
+	public function getID(){
+		return ($this->id);
+	}
+
 	public function getPass(){
 		return ($this->password);
 	}

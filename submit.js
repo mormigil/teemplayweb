@@ -1,28 +1,13 @@
 $(document).on('click', '#gameidea', function(){
-	var user = getCookie('username');
-	var user_id;
+	var user_id = getCookie('username');
 	$.ajax({
-		type: 'GET',
-		url: 'users.php',
-		data: {username: user},
+		type: 'POST',
+		url: 'ideas.php',
+		data: {id: null, userid: user_id, title: $("#title").val(), tweet: $("#tweet").val(),
+			description: $("#description").val(), genre: $("#genre").val()},
 		dataType: 'json',
 		success: function(data){
-			user_id = parseInt(data['id'], 10);
-			$.ajax({
-				type: 'POST',
-				url: 'ideas.php',
-				data: {id: null, userid: user_id, title: $("#title").val(), tweet: $("#tweet").val(),
-					description: $("#description").val(), genre: $("#genre").val()},
-				dataType: 'json',
-				success: function(data){
-					alert("ran through");
-				},
-				error: function(data, error){
-					console.debug(data);
-					console.debug(error);
-				}
-
-			});
+			alert("ran through");
 		},
 		error: function(data, error){
 			console.debug(data);
