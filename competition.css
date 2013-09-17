@@ -1,28 +1,95 @@
 /*competition.css*/
-.box{
-	float: left;
-	padding: .5% 1% .5% 1%;
-	width: 25%;
-	margin-left: 3%;
-	margin-right: 3%;
-	margin-bottom: 2%;
-	border-style: solid;
-	border-color: green;
-	border-width: 2px;
+body{
+	font-family: arial;
+	margin: 0;
+	height: 100%;
+	color: #888888;
+
+	/* taken from http://www.cssmatic.com/gradient-generator */
+	background: rgba(224,224,224,1);
+	background: -moz-linear-gradient(top, rgba(224,224,224,1) 0%, rgba(230,230,230,1) 76%, rgba(240,240,240,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(224,224,224,1)), color-stop(76%, rgba(230,230,230,1)), color-stop(100%, rgba(240,240,240,1)));
+	background: -webkit-linear-gradient(top, rgba(224,224,224,1) 0%, rgba(230,230,230,1) 76%, rgba(240,240,240,1) 100%);
+	background: -o-linear-gradient(top, rgba(224,224,224,1) 0%, rgba(230,230,230,1) 76%, rgba(240,240,240,1) 100%);
+	background: -ms-linear-gradient(top, rgba(224,224,224,1) 0%, rgba(230,230,230,1) 76%, rgba(240,240,240,1) 100%);
+	background: linear-gradient(to bottom, rgba(224,224,224,1) 0%, rgba(230,230,230,1) 76%, rgba(240,240,240,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#f0f0f0', GradientType=0 );
+
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
-.box > *{
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+#wrapper{
+	height: 100%;
+}
+
+a{
+	text-decoration: none;
+	font-weight: bold;
+	color: #8888ff;
+}
+
+#main{
+	height: 100%;
+}
+
+#bar{
+
+	position: fixed;
+	margin: 0 auto;
+	
+	width: 100%;
+	height: 44px;
+
+	background: rgba(255,255,255,1);
+	box-shadow: 0px 0px 11px 11px #aaa;
+}
+
+#item{
+	height: 44px;
+}
+
+#username{
+	float: right;
+	width: 100px;
+}
+
+.block{
+	padding: 22px 22px 22px 22px;
 	text-align: center;
+
+	margin-top: 66px;
+	margin-left: 5%;
+
+	background-color: #ffffff;
+	display: block;
+
+	box-shadow: 0px 0px 5px 5px #aaa;
+	overflow: hidden;
 }
 
-.box > a, .vote{
+.top > p{
+	font-size: 11px;
+}
+
+.top {
 	float: left;
-	margin-left: 15%;
-	margin-top: 0%;
-	margin-bottom: 0%;
-	width: 30%;
+	width: 22%;
+	height: 222px;
+}
+
+.bottom {
+	clear: both;
+	float: left;
+	width: 88%;
+	height: 333px;
+	margin-top: 5px;
+	margin-left: 3%;
+}
+
+.text {
+	clear: both;
+	float: left;
+	margin-left: 3%;
 }
 
