@@ -61,7 +61,7 @@ $(document).ready(function(){
 
 $(document).on('click', '.vote', function(){
 	$.post("ideas.php", {id: $(this).val()}, function(data){
-		alert("bullshit");
+
 	}, "json");
 	alert("Thank you for your vote please come back tomorrow to cast another!");
 	voted($(this).val());

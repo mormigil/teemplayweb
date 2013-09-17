@@ -28,7 +28,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 				$vote_ids[] = $t->getJSON();
 			}
 			header("Content-type: application/json");
-			print(json_encode($idea_ids));
+			print(json_encode($vote_ids));
 			exit();
 		}
 		//find all votes from an idea

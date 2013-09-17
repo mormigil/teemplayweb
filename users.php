@@ -6,12 +6,12 @@ information - read or delete their information - delete*/
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
 	if(!isset($_SERVER['PATH_INFO'])){
 		if(!empty($_GET)){
-			if(empty($_GET['username'])){
+			if(empty($_GET['userid'])){
 				header("HTTP/1.1 400 Bad Request");
 				print("There must be a user we are accessing");
 				exit();
 			}
-			$user = user::findByName($_GET['username']);
+			$user = user::findByID($_GET['userid']);
 			if(is_null($user)){
 				header("HTTP/1.1 400 Bad Request");
 				print("user name does not exist");
@@ -90,9 +90,9 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					$check = $hasher->CheckPassword($password, $stored_hash);
 					if($check){
 						$user_browser = $_SERVER['HTTP_USER_AGENT']; // Get the user-agent string of the user.
-						$username = mysql_real_escape_string($_POST['username']); // XSS protection as we might print this value
+						$userid = $user->getID(); // XSS protection as we might print this value
 						$login_string = hash('sha512', $stored_hash.$user_browser);
-						setcookie("username", $username, strtotime('time+06:00'), '/');
+						setcookie("username", $userid, strtotime('time+06:00'), '/');
 						setcookie("a", $login_string, strtotime('time+06:00'), '/');
 						header("Content-type: application/json");
 						print(json_encode($user->getJSON()));
