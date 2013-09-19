@@ -6,6 +6,7 @@ $(document).on('click', '#login', function(){
 		dataType: 'json',
 		success: function(data){
 			alert("ran through");
+			window.location.replace("http://localhost/teemplayweb/idea_viewing.php");
 		},
 		error: function(data, error){
 			console.debug(data);

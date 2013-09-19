@@ -73,8 +73,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			exit();
 		}
 		$vote = vote::createVote(NULL, $_POST['ideaid'], $_POST['userid']);
-		header("Content-type: application/json");
-		print(json_encode($vote->getJSON()));
+		if($vote){
+			header("Content-type: application/json");
+			print(json_encode($vote->getJSON()));
+			exit();
+		}
+		header("HTTP/1.1 400 Bad Request");
+		print("You can only vote on ideas once");
 		exit();
 	} else {
 

@@ -13,7 +13,7 @@ $(document).ready(function(){
 			idea_ids = data;
 			$.get('http://localhost/teemplayweb/ideas.php/'+id, function(data){
 				for(var j = 0; j<idea_ids.length; j++){
-					if(data['id']==idea_ids[j]['id']){
+					if(data['id']==idea_ids[j]['ideaid']){
 						$("#idea_info").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
 						"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
@@ -34,6 +34,12 @@ $(document).ready(function(){
 	}
 });
 
+$(document).on("click", ".vote", function(){
+	var userid = getCookie('username');
+	$.post("http://localhost/teemplayweb/votes.php", {ideaid: $(this).val(), userid: userid}, function(){
+		alert("voted!");
+	});
+});
 
 function getCookie(c_name){
 	var c_value = document.cookie;

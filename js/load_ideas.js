@@ -6,7 +6,7 @@ function loadIdeas(user, id){
 			$.get("ideas.php", function(data){
 				for(var i = 0; i<data.length; i++){
 					for(var j = 0; j<idea_ids.length; j++){
-						if(data[i]['id']==idea_ids[j]['id']){
+						if(data[i]['id']==idea_ids[j]['ideaid']){
 							$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
@@ -30,7 +30,7 @@ function loadIdeas(user, id){
 		else{
 			$.get('http://localhost/teemplayweb/ideas.php/'+id, function(data){
 			for(var j = 0; j<idea_ids.length; j++){
-					if(data['id']==idea_ids[j]['id']){
+					if(data['id']==idea_ids[j]['ideaid']){
 						$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
 						"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+

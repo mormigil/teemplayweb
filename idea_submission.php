@@ -21,7 +21,7 @@ require("loggedin.php");
                 <li>Play</li>
             </ul>
             <div id = "userinfo"></div>
-        </div>
+        </div><!--header-->
 		<div id = "main">
 				Title:<br>
     <input type="text" id="title" value="">

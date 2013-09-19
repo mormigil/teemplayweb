@@ -8,8 +8,9 @@ class idea{
 	private $genre;
 	private $votes;
 	private $time;
+	private $stage;
 
-	private function __construct($id, $userid, $title, $tweet, $description, $genre, $votes, $time){
+	private function __construct($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage){
 		$this->id = $id;
 		$this->userid = $userid;
 		$this->title = $title;
@@ -18,18 +19,19 @@ class idea{
 		$this->genre = $genre;
 		$this->votes = $votes;
 		$this->time = $time;
+		$this->stage = $stage;
 	}
 
-	public static function createIdea($id, $userid, $title, $tweet, $description, $genre, $votes, $time){
+	public static function createIdea($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "INSERT INTO ideas (id, userid, title, tweet, description, genre, votes, time) VALUES(
-			?,?,?,?,?,?,?,?)";
+			?,?,?,?,?,?,?,?,?)";
 		try{
 			$prep = $mysqli->prepare($query);
-			$prep->bind_param('ssssssss', $id, $userid, $title, $tweet, $description, $genre, $votes, $time);
+			$prep->bind_param('ssssssss', $id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage);
 			if($prep->execute()){
 				$id = $mysqli->insert_id;
-				return new Idea($id, $userid, $title, $tweet, $description, $genre, $votes, $time);
+				return new Idea($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage);
 			}
 			return null;
 		}
@@ -92,7 +94,7 @@ class idea{
 		}
 		$idea_info = $result->fetch_array();
 		return new Idea($idea_info['id'], $idea_info['userid'], $idea_info['title'], $idea_info['tweet'],
-			$idea_info['description'], $idea_info['genre'], $idea_info['votes'], $idea_info['time']);
+			$idea_info['description'], $idea_info['genre'], $idea_info['votes'], $idea_info['time'], $idea_info['stage']);
 		}
 		return null;
 	}
@@ -117,13 +119,16 @@ class idea{
 
 	public function update(){
 		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
-		$query = "UPDATE idea SET userid = ?, title = ?, tweet = ?, description = ?, genre = ?,  
-			votes = ?, time = ? WHERE id = ?";
+		$query = "UPDATE ideas SET userid = ?, title = ?, tweet = ?, description = ?, genre = ?,  
+			votes = ?, time = ?, stage = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);
-		$prep->bind_param('ssssssss', $this->userid, $this->title, $this->tweet, $this->description, $this->genre, $this->votes, $this->time, $this->id);
+		$prep->bind_param('sssssssss', $this->userid, $this->title, $this->tweet, $this->description, 
+			$this->genre, $this->votes, $this->time, $this->stage, $this->id);
 		$prep->execute();
 		$result = $prep->get_result();
-		printf("Errormessage: %s\n", $mysqli->error);
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
 		return $result;
 	}
 
@@ -155,6 +160,10 @@ class idea{
 		return $this->time;
 	}
 
+	public function getStage(){
+		return $this->stage;
+	}
+
 	public function getJSON(){
 		$json_rep = array();
 		$json_rep['id'] = $this->id;
@@ -165,6 +174,7 @@ class idea{
 		$json_rep['genre'] = $this->genre;
 		$json_rep['votes'] = $this->votes;
 		$json_rep['time'] = $this->time;
+		$json_rep['stage'] = $this->stage;
 		return $json_rep;
 	}
 }

@@ -12,6 +12,8 @@ class vote{
 
 	}
 
+	/*doing a no no here and adding a side effect to creating a vote. This will also serve as
+	the place where the user's votes and the idea's votes are updated.*/
 	public static function createVote($id, $ideaid, $userid){
 		$vote = vote::findByIdeaAndUser($ideaid, $userid);
 		if(empty($vote)){
@@ -22,6 +24,8 @@ class vote{
 				$prep->bind_param('sss', $id, $ideaid, $userid);
 				if($prep->execute()){
 					$id = $mysqli->insert_id;
+					vote::updateIdea($mysqli, $ideaid);
+					vote::updateUser($mysqli, $userid);
 					return new vote($id, $ideaid, $userid);
 				}
 				return null;
@@ -31,8 +35,43 @@ class vote{
 				die("failed to run query");
 			}
 		}
-	return null;
-		
+	return null;	
+	}
+
+	private static function updateIdea($mysqli, $ideaid){
+		$query = "SELECT COUNT(*) FROM vote WHERE ideaid = ?";
+		$query2 = "UPDATE ideas SET votes = ? WHERE id = ?";
+		$prep = $mysqli->prepare($query);
+		$prep->bind_param('s', $ideaid);
+		$prep->execute();
+		$result = $prep->get_result();
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
+		if($result){
+			$count = $result->fetch_array();
+			$prep2 = $mysqli->prepare($query2);
+			$prep2->bind_param('ss', $count[0], $ideaid);
+			$prep2->execute();
+		}
+	}
+
+	private static function updateUser($mysqli, $userid){
+		$query = "SELECT COUNT(*) FROM vote WHERE userid = ?";
+		$query2 = "UPDATE users SET votes = ? WHERE id = ?";
+		$prep = $mysqli->prepare($query);
+		$prep->bind_param('s', $userid);
+		$prep->execute();
+		$result = $prep->get_result();
+		if($mysqli->error){
+			printf("Errormessage: %s\n", $mysqli->error);
+		}
+		if($result){
+			$count = $result->fetch_array();
+			$prep = $mysqli->prepare($query2);
+			$prep->bind_param('ss', $count[0], $userid);
+			$prep->execute();
+		}
 	}
 
 	public static function findByID($id){
@@ -55,7 +94,7 @@ class vote{
 		return null;
 	}
 
-	public static function findByUser($userid, $start){
+	public static function findByUser($userid){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "SELECT id FROM vote WHERE userid = ?";
 		$prep = $mysqli->prepare($query);
@@ -67,17 +106,21 @@ class vote{
 		}
 		$votes = array();
 		if($result){
-			for($i=$start; $i<($start+20);$i++){
+			//go until there are no more votes for the user
+			while(true){
 				$next_row = $result->fetch_row();
 				if($next_row){
 					$votes[] = vote::findByID($next_row[0]);
+				}
+				else{
+					break;
 				}
 			}
 		}
 		return $votes;
 	}
 
-	public static function findByIdea($ideaid, $start){
+	public static function findByIdea($ideaid){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "SELECT id FROM vote WHERE ideaid = ?";
 		$prep = $mysqli->prepare($query);
@@ -89,10 +132,14 @@ class vote{
 		}
 		$votes = array();
 		if($result){
-			for($i=$start; $i<($start+20);$i++){
+			//go until there are no more votes for the idea
+			while(true){
 				$next_row = $result->fetch_row();
 				if($next_row){
 					$votes[] = vote::findByID($next_row[0]);
+				}
+				else{
+					break;
 				}
 			}
 		}
@@ -110,11 +157,11 @@ class vote{
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
 		if($result){
-			if($result->num_rows != 1){
+			if($result->num_rows == 0){
 				return null;
 			}
 			$id = $result->fetch_row();
-			$vote = vote::findByID($id);
+			$vote = vote::findByID($id[0]);
 			return $vote;
 		}
 		return null;
