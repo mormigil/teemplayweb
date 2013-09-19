@@ -11,7 +11,8 @@ function loadIdeas(user, id){
 							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
 							data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
-							"' class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button></div></div>");
+							"' class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button><a href = 'idea_detailed.php/"+
+							data[i]["id"]+"'>More Info</a></div></div>");
 							break;
 						}
 					}
@@ -20,7 +21,8 @@ function loadIdeas(user, id){
 						"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
 						data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
-						"' class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button></div></div>");
+						"' class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button><a href = 'idea_detailed.php/"+
+							data[i]["id"]+"'>More Info</a></div></div>");
 					}
 				}
 			}, 'json');
@@ -33,7 +35,8 @@ function loadIdeas(user, id){
 						"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
 						data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
-						"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button></div></div>");
+						"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button><a href = "+
+						"'http://localhost/teemplayweb/idea_detailed.php/"+data[i]["id"]+"'>More Info</a></div></div>");
 						break;
 					}
 				}
@@ -42,7 +45,8 @@ function loadIdeas(user, id){
 					"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
 					"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
 					data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
-					"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button></div></div>");
+					"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button><a href = "+
+						"'http://localhost/teemplayweb/idea_detailed.php/"+data[i]["id"]+"'>More Info</a></div></div>");
 				}
 			}, 'json');
 		}

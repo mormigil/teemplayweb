@@ -21,6 +21,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			exit();
 		}
 		//find all votes cast from a user
+		//votes will need some kind of expiration mechanic so that this query is limited to no more than roughly
+		//300 votes
 		if(!empty($_GET['userid'])&&empty($_GET['ideaid'])){
 			$votes = vote::findByUser($_GET['userid'], 0);
 			$vote_ids = array();

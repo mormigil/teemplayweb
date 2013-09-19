@@ -1,0 +1,35 @@
+#logoimg, #nav-menu, #userinfo{
+	float: left;
+}
+
+#header{
+	height: 50px;
+	border-color: #808080;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom:1%;
+}
+
+#logoimg{
+	border-right: 1px solid gray;
+}
+
+#nav-menu{
+	margin-left: 70%;
+}
+
+#nav-menu > a, #nav-menu > li{
+	list-style: none;
+	float: left;
+	padding: 3px 3px;
+	margin-left: 5px;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+}
+
+#userinfo{
+	border-left: 2px solid gray;
+	padding-left: 2%;
+	margin-left: 2%;
+}
