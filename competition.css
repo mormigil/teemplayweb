@@ -1,5 +1,8 @@
 /*competition.css*/
 body{
+	/*position: absolute;*/
+	position: relative;
+
 	font-family: Helvetica;
 	margin: 0;
 	height: 100%;
@@ -68,56 +71,173 @@ body{
 a{
 	text-decoration: none;
 	font-weight: bold;
-	color: #8888ff;
+	/*color: #8888ff;*/
+	color: #662266;
 }
 
 #main{
 	height: 100%;
 }
 
-#bar{
+.bar{
 
-	position: fixed;
+	/*position: fixed;*/
+	/*position: relative;*/
+	/*position: absolute;*/
 	margin: 0 auto;
 	
 	width: 100%;
 	height: 44px;
 
 	background: rgba(255,255,255,1);
-	box-shadow: 0px 0px 11px 11px #aaa;
-	/*box-shadow: 0px 0px 3px 2px #000;*/
+	/*box-shadow: 0px 0px 11px 11px #aaa;*/
+	box-shadow: 0px 0px 3px 2px #000;
+
+	/*display: block;*/
+	/*margin-bottom: 44;*/
+}
+
+.bar-lowest{
+	height: 22px;
+
+	box-shadow: 0px 0px 0px 0px #000;
+}
+
+.highZ{
+	z-index: 10;
+}
+
+.lowZ{
+	z-index: -10;
 }
 
 .item{
-	height: 44px;
+	height: 40px;
 	width: auto;
+}
+
+.miniblock{
+
+	float: right;
+
+	margin-top: 5px;
+	margin-right: 3px;
+	margin-left: 3px;
+
+	padding-left: 4px;
+	padding-right: 4px;
+
+	height: 32px;
+	width:32px;
+
+	display: block;
+
+	/*box-shadow: 0px 0px 5px 5px #aaa;*/
+	box-shadow: 0px 0px 3px 2px #000;
+	/*box-shadow: 0px 0px 6px 6px #888;*/
+	overflow: hidden;
+}
+
+.miniblock:hover{
+	/*background-color: #eeffee;*/
+	background-color: #ffeeff;
+	/*box-shadow: 0px 0px 6px 6px #ccc;*/
+	box-shadow: 0px 0px 2px 1px #000;
+	/*box-shadow: 0px 0px 6px 6px #444;*/
+	color: #222222;
+}
+
+.miniblock > p{
+	text-align: center;
+	font-size: 8px;
+}
+
+.longblock{
+	float: left;
+
+	margin-left: 122px;
+	margin-top: 30px;
+	margin-right: 4px;
+
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-bottom: 2px;
+	padding-top: 2px;
+
+	height: 22px;
+	width: 128px;
+
+	display: block;
+
+	box-shadow: 0px 0px 3px 2px #000;
+	overflow: hidden;
+
+	border-radius: 22px 22px 22px 22px;
+}
+
+.longblock > p{
+	margin-top: 4px;
+	text-align: center;
+	font-size: 14px;
+}
+
+.longblock:hover{
+	/*background-color: #eeffee;*/
+	background-color: #ffeeff;
+	/*box-shadow: 0px 0px 6px 6px #ccc;*/
+	box-shadow: 0px 0px 2px 1px #000;
+	/*box-shadow: 0px 0px 6px 6px #444;*/
+	color: #222222;
+}
+
+.longblock-description{
+	height: 66px;
+	width: 33%;
+
+	float: left;
+	margin-left: 4px;
+	margin-top: 2px;
+
+	overflow: hidden;
+}
+
+.longblock-description > p{
+	text-align: center;
+	font-size: 12;
+}
+
+.subbar{
+	height: 88px;
 }
 
 #username{
 	float: right;
 	width: 100px;
+	margin-left: 22px;
 }
 
 .block{
 	padding: 2% 3% 2% 3%;
 	text-align: center;
 
-	margin-top: 66px;
+	/*margin-top: 66px;*/
+	margin-top: 22px;
 	margin-left: 4%;
 
 	background-color: #ffffff;
 	display: block;
 
-	box-shadow: 0px 0px 5px 5px #aaa;
-	/*box-shadow: 0px 0px 3px 2px #000;*/
+	/*box-shadow: 0px 0px 5px 5px #aaa;*/
+	box-shadow: 0px 0px 3px 2px #000;
 	/*box-shadow: 0px 0px 6px 6px #888;*/
 	overflow: hidden;
 }
 
 .top:hover{
-	background-color: #eeffee;
-	box-shadow: 0px 0px 6px 6px #ccc;
-	/*box-shadow: 0px 0px 2px 1px #000;*/
+	/*background-color: #eeffee;*/
+	background-color: #ffeeff;
+	/*box-shadow: 0px 0px 6px 6px #ccc;*/
+	box-shadow: 0px 0px 2px 1px #000;
 	/*box-shadow: 0px 0px 6px 6px #444;*/
 	color: #222222;
 }
@@ -136,7 +256,7 @@ a{
 	clear: both;
 	float: left;
 	width: 88%;
-	height: 300px;
+	height: 222px;
 	margin-top: 5px;
 	margin-left: 3%;
 	margin-bottom: 3%;
@@ -146,5 +266,17 @@ a{
 	clear: both;
 	float: left;
 	margin-left: 3%;
+}
+
+.selected {
+	background-color: #444488;
+}
+
+.selected > p{
+	color: #ffffff;
+}
+
+.selected:hover {
+	background-color: #555599;
 }
 
