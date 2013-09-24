@@ -100,7 +100,7 @@ a{
 .bar-lowest{
 	height: 22px;
 
-	box-shadow: 0px 0px 0px 0px #000;
+	/*box-shadow: 0px 0px 0px 0px #000;*/
 }
 
 .highZ{
@@ -207,6 +207,7 @@ a{
 }
 
 .subbar{
+	margin-top: 0px;
 	height: 88px;
 }
 
