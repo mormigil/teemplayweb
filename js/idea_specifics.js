@@ -12,6 +12,10 @@ $(document).ready(function(){
 		$.get("http://localhost/teemplayweb/votes.php", {userid:user_id}, function(data){
 			idea_ids = data;
 			$.get('http://localhost/teemplayweb/ideas.php/'+id, function(data){
+				var stage = data['stage'];
+				//find a way to remove links if the link number is greater than stage
+				//	$("#"+stage > a).remove();
+
 				for(var j = 0; j<idea_ids.length; j++){
 					if(data['id']==idea_ids[j]['ideaid']){
 						$("#idea_info").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+

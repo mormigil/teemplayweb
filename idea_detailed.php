@@ -26,14 +26,14 @@ require("loggedin.php");
 		</div>
 		<div id = "tabs">
 			 <ul>
-				<li><a href="#idea_misc">Idea</a></li>
-				<li><a href="#story">Story</a></li>
-				<li><a href="#character">Character Design</a></li>
-				<li><a href="#art">Art Style</a></li>
-				<li><a href="#mechanics">Core Mechanics</a></li>
-				<li><a href="#levels">Level Design</a></li>
-				<li><a href="#price">Price</a></li>
-				<li><a href="#distribution">Distribution</a></li>				
+				<li><span id = "1"><a href="#idea_misc">Idea</a></span></li>
+				<li><span id = "2"><a href="#story">Story</a></span></li>
+				<li><span id = "3"><a href="#character">Character Design</a></span></li>
+				<li><span id = "4"><a href="#art">Art Style</a></span></li>
+				<li><span id = "5"><a href="#mechanics">Core Mechanics</a></span></li>
+				<li><span id = "6"><a href="#levels">Level Design</a></span></li>
+				<li><span id = "7"><a href="#price">price</a></p></li>
+				<li><span id = "8"><a href="#distribution">Distribution</a></span></li>
 			</ul>
 			<div id ="idea_info"></div>
 			<div id = "idea_misc">Stuff in here?</div>
