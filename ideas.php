@@ -80,7 +80,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		if(empty($_POST['id'])){
 			if(!empty($_POST['title'])&&!empty($_POST['tweet'])&&!empty($_POST['description'])&&!empty($_POST['genre'])){
 				$idea = idea::createIdea(NULL, $_POST['userid'], $_POST['title'], $_POST['tweet'],
-					$_POST['description'], $_POST['genre'], '0', time());
+					$_POST['description'], $_POST['genre'], '0', time(), '0');
 				header("Content-type: application/json");
 				print(json_encode($idea->getJSON()));
 				exit();

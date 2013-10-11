@@ -24,11 +24,11 @@ class idea{
 
 	public static function createIdea($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
-		$query = "INSERT INTO ideas (id, userid, title, tweet, description, genre, votes, time) VALUES(
+		$query = "INSERT INTO ideas (id, userid, title, tweet, description, genre, votes, time, stage) VALUES(
 			?,?,?,?,?,?,?,?,?)";
 		try{
 			$prep = $mysqli->prepare($query);
-			$prep->bind_param('ssssssss', $id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage);
+			$prep->bind_param('sssssssss', $id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage);
 			if($prep->execute()){
 				$id = $mysqli->insert_id;
 				return new Idea($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage);

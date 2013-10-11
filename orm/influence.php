@@ -75,7 +75,14 @@ class influence{
 		}
 	}
 
-	public static function findByVoteIdea($ideaid, $type, $start){
+
+	/*I need a voted black list so that ideas you've already voted for don't reappear
+	on the voting function. I guess this means votes have finality however (hard to
+	change your vote). The idea is that you generate a random number between the results
+	and then if that number is blacklisted try the next number until you find an empty one
+	if there are no empty numbers it won't run because the blacklist is the size of the
+	results array.*/
+	public static function findByVoteIdea($ideaid, $type, $start, $votedBlackList){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY time desc";
 		$prep = $mysqli->prepare($query);
@@ -87,8 +94,19 @@ class influence{
 		if($result){
 			for($i=$start;$i<($start+10);$i++){
 				double $choice = rand(1, $influences);
-				$choice = ceil((($choice/$influences)^2)*$choice)-1;
-				$result->data_seek($choice);
+				$choice = ceil((($choice/$influences)^2)*$choice);
+				while(in_array($choice, $votedBlackList)){
+					if($influences==count($votedBlackList)){
+						break;
+					}
+					if($choice<$influences){
+						$choice++;
+					}
+					else{
+						$choice = 0;
+					}
+				}
+				$result->data_seek($choice-1);
 				$row = $result->fetch_row();
 				if($row){
 					$ideas[] = influence::findByID($row[0]);

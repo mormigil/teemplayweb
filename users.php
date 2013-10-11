@@ -115,7 +115,8 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		}
 		if(strlen($hash)>=20){
 		$user = user::createUser(NULL, $_POST['username'], $hash, $_POST['level'], 
-			$_POST['description'], $_POST['votes'], $_POST['email']);
+			$_POST['description'], $_POST['votes'], $_post['votes_influence'],
+			$_POST['email']);
 		header("Content-type: application/json");
 		print(json_encode($user->getJSON()));
 		exit();

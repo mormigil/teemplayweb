@@ -35,6 +35,15 @@ $(document).ready(function(){
 				}
 			}, 'json');
 		}, 'json');
+
+		//add in the influence information, a place to add a new influence and a place to see current 
+		//influences and vote on them along with a link to a plain voting hub
+		$.get('http://localhost/teemplayweb/votes_influence.php', {userid:user_id}, function(data){
+			influence_ids = data;
+			$.get("http://localhost/teemplayweb/influences.php/"+id, function(data){
+				//add specific instances of influence.
+			}, 'json');
+		}, 'json');
 	}
 });
 

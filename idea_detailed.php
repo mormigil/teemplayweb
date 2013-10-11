@@ -32,7 +32,7 @@ require("loggedin.php");
 				<li><span id = "4"><a href="#art">Art Style</a></span></li>
 				<li><span id = "5"><a href="#mechanics">Core Mechanics</a></span></li>
 				<li><span id = "6"><a href="#levels">Level Design</a></span></li>
-				<li><span id = "7"><a href="#price">price</a></p></li>
+				<li><span id = "7"><a href="#price">Price</a></p></li>
 				<li><span id = "8"><a href="#distribution">Distribution</a></span></li>
 			</ul>
 			<div id ="idea_info"></div>
