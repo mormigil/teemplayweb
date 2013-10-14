@@ -15,6 +15,28 @@ $(document).on('click', '#gameidea', function(){
 		}
 	});
 });
+
+$(document).on('click', '#influenceidea', function(){
+	var user_id = getCookie('username');
+	alert("clicking");
+	var pathArray = window.location.pathname.split('/');
+	var id = pathArray[pathArray.length-1];
+	var hash = window.location.hash.substring(1);
+	$.ajax({
+		type: 'POST',
+		url: 'http://localhost/teemplayweb/influences.php',
+		data: {userid: user_id, ideaid: id, title: $("#title").val(), pics_ref: $("#pics_ref").val(),
+			description: $("#description").val(), type: hash},
+		dataType: 'json',
+		success: function(data){
+			alert("ran through");
+		},
+		error: function(data, error){
+			console.debug(data);
+			console.debug(error);
+		}
+	});
+});
 /* Would be used if you could change an idea after submitting it. 
 $(document).on('click', '#changeidea', function(){
 	var user = getCookie('username');

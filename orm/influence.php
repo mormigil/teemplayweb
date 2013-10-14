@@ -25,12 +25,12 @@ class influence{
 	public static function createInfluence($id, $userid, $ideaid, $title, $description, $pics_ref, $votes, $type, $time){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "INSERT INTO influence (id, userid, ideaid, title, description, pics_ref, votes, type, time) VALUES 
-		(?,?,?,?,?,?,?,?, ?)";
+		(?,?,?,?,?,?,?,?,?)";
 		$prep = $mysqli->prepare($query);
-		$prep->bind_param("ssssssss", $id, $userid, $ideaid, $title, $description, $pics_ref, $votes, $type, $time);
+		$prep->bind_param("sssssssss", $id, $userid, $ideaid, $title, $description, $pics_ref, $votes, $type, $time);
 		if($prep->execute()){
 			$id = $mysqli->insert_id;
-			return new Influence($id, $userid, $ideaid, $title, $description, $pics_ref, $votes, $type, $time);
+			return new influence($id, $userid, $ideaid, $title, $description, $pics_ref, $votes, $type, $time);
 		}
 		printf("Errormessage: %s\n", $mysqli->error);
 		return null;
@@ -51,8 +51,8 @@ class influence{
 			return null;
 		}
 		$influence_info = $result->fetch_array();
-		return new Influence($influence_info['id'], $influence_info['name'], $influence_info['pass'], $influence_info['level'],
-			$influence_info['description'], $influence_info['votes'], $influence_info['email'], $influence_info['time']);
+		return new Influence($influence_info['id'], $influence_info['userid'], $influence_info['ideaid'], $influence_info['title'],
+			$influence_info['description'], $influence_info['pics_ref'], $influence_info['votes'], $influence_info['type'], $influence_info['time']);
 		}
 		return null;
 	}
@@ -61,18 +61,19 @@ class influence{
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY time desc";
 		$prep = $mysqli->prepare($query);
-		$prep->bind_param('s,s', $ideaid, $type);
+		$prep->bind_param('ss', $ideaid, $type);
 		$prep->execute();
 		$result = $prep->get_result();
-		$ideas = array();
+		$influences = array();
 		if($result){
 			for($i=$start;$i<($start+10);$i++){
 				$next_row = $result->fetch_row();
 				if($next_row){
-					$ideas[] = influence::findByID($next_row[0]);
+					$influences[] = influence::findByID($next_row[0]);
 				}
 			}
 		}
+		return $influences;
 	}
 
 
@@ -84,18 +85,20 @@ class influence{
 	results array.*/
 	public static function findByVoteIdea($ideaid, $type, $start, $votedBlackList){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
-		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY time desc";
+		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY votes desc";
 		$prep = $mysqli->prepare($query);
-		$prep->bind_param('s,s', $ideaid, $type);
+		$prep->bind_param('ss', $ideaid, $type);
 		$prep->execute();
 		$result = $prep->get_result();
-		$influences = $result->num_rows();
+		$influences = $result->num_rows;
 		$ideas = array();
 		if($result){
 			for($i=$start;$i<($start+10);$i++){
-				double $choice = rand(1, $influences);
-				$choice = ceil((($choice/$influences)^2)*$choice);
-				while(in_array($choice, $votedBlackList)){
+				$choice = rand(1, 100);
+				$choice = ceil(($choice*$choice/10000)*($influences));
+				/*print($choice);
+				print($votedBlackList[0]);
+				while(in_array($choice, $votedBlackList)){\
 					if($influences==count($votedBlackList)){
 						break;
 					}
@@ -105,17 +108,37 @@ class influence{
 					else{
 						$choice = 0;
 					}
-				}
+				}*/
 				$result->data_seek($choice-1);
 				$row = $result->fetch_row();
 				if($row){
+					$id = $row[0];
+					while(in_array($id, $votedBlackList)){
+						if($influences == count($votedBlackList)){
+							return $ideas;
+						}
+						$upchoice = $choice++;
+						if($choice<$influences){
+							$choice++;
+						}
+						else{
+							$choice = 0;
+						}
+						$result->data_seek($choice-1);
+						$row = $result->fetch_row();
+						if($row){
+							$id = $row[0];
+						}
+					}
 					$ideas[] = influence::findByID($row[0]);
+					$votedBlackList[] = $row[0];
 				}
 			}
 		}
+		return $ideas;
 	}
 
-	public static function findByUser($userid){
+	public static function findByUser($userid, $start){
 		$query = "SELECT id FROM influence WHERE userid = ? AND type = ? ORDER BY time desc";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s,s', $ideaid, $type);
