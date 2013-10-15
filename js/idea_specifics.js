@@ -1,13 +1,15 @@
+
+
 $(document).ready(function(){
 	$(function(){
 		$( "#tabs" ).tabs();
 	});
 	var pathArray = window.location.pathname.split('/');
-	var id = pathArray[pathArray.length-1];
-	var hash = window.location.hash;
-	var hashNum = getHashNumber(hash);
+	var id = pathArray[pathArray.length-2];
+	var stage = pathArray[pathArray.length-1];
+	var stageNum = getStageNumber(stage);
 	var user_id = getCookie('username');
-	if(id=='idea_detailed.php'||id===''){
+	if(id=='idea_detailed.php'||id===''||id=='teemplayweb'||stage===''){
 		window.location.replace("http://localhost/teemplayweb/idea_viewing.php");
 	}
 	else{
@@ -49,24 +51,28 @@ $(document).ready(function(){
 			if(influence_ids[0]===null||influence_ids[0]===undefined){
 				influence_ids = null;
 			}
-			$.get("http://localhost/teemplayweb/influences.php", {ideaid:id, type:hashNum, blacklist:influence_ids}, function(data){
+			$.get("http://localhost/teemplayweb/influences.php", {ideaid:id, type:stageNum, blacklist:influence_ids}, function(data){
 				for(var i = 0; i<3; i++){
 					if(i>=data.length){
 						break;
 					}
 					//have 3 current pieces of influence shown
-					$(hash).append("<div class = 'inf_box' id = 'inf_box"+data[i]["id"]+
+					$("#"+stage).append("<div class = 'inf_box' id = 'inf_box"+data[i]["id"]+
 					"'><div class = 'title'>"+"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+
 					data[i]["userid"]+"</p></div><div class = 'description'><p>"+data[i]["description"]+
 					"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
 					"' class = 'vote_inf' id = 'vote_inf"+data[i]["id"]+"'>"+"vote</button></div></div>");
 				}
 				//Have a way to submit a piece of influence for the current stage
-				$(hash).append("<div class = 'submit'><a href = '../influence_submission.php/"+id+"#"+hashNum+"'>Submit"+
+				$("#"+stage).append("<div class = 'submit'><a href = '../influence_submission.php/"+id+"#"+stageNum+"'>Submit"+
 					" your own idea</a></div>");
 			}, 'json');
 		}, 'json');
 	}
+});
+
+$("#idea_info").click(function(e){
+	alert("clicking the link");
 });
 
 //vote for the idea
@@ -86,10 +92,10 @@ $(document).on("click", ".vote_inf", function(){
 });
 
 //match the stage description with its number
-function getHashNumber(hash){
-	var stages = ["#idea_misc", "#story", "#character", "#art", "#mechanics", "#levels", "#price", "#distribution"];
+function getStageNumber(stage){
+	var stages = ["idea_misc", "story", "character", "art", "mechanics", "levels", "price", "distribution"];
 	for(var i = 0; i<8; i++){
-		if(hash === stages[i]){
+		if(stage === stages[i]){
 			return i;
 		}
 	}

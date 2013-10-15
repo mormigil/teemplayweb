@@ -1,6 +1,8 @@
 function loadIdeas(user, id){
-	var stages = ["#idea_misc", "#story", "#character", "#art", "#mechanics", "#levels",
+	var stages2 = ["#idea_misc", "#story", "#character", "#art", "#mechanics", "#levels",
 		"#price", "#distribution"];
+	var stages = ["/idea_misc", "/story", "/character", "/art", "/mechanics", "/levels",
+		"/price", "/distribution"];
 	user_id = user;
 	$.get("http://localhost/teemplayweb/votes.php", {userid:user_id}, function(data){
 		idea_ids = data;
@@ -14,7 +16,7 @@ function loadIdeas(user, id){
 							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
 							data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
 							"' class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button><a href = 'idea_detailed.php/"+
-							data[i]["id"]+stages[data[i]["stage"]]+"'>More Info</a></div></div>");
+							data[i]["id"]+stages[data[i]["stage"]]+stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
 							break;
 						}
 					}
@@ -24,7 +26,7 @@ function loadIdeas(user, id){
 						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
 						data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
 						"' class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button><a href = 'idea_detailed.php/"+
-							data[i]["id"]+stages[data[i]["stage"]]+"'>More Info</a></div></div>");
+							data[i]["id"]+stages[data[i]["stage"]]+stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
 					}
 				}
 			}, 'json');
@@ -39,7 +41,7 @@ function loadIdeas(user, id){
 						data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
 						"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button><a href = "+
 						"'http://localhost/teemplayweb/idea_detailed.php/"+data[i]["id"]+stages[data[i]["stage"]]+
-						"'>More Info</a></div></div>");
+						stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
 						break;
 					}
 				}
@@ -50,7 +52,7 @@ function loadIdeas(user, id){
 					data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
 					"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button><a href = "+
 						"'http://localhost/teemplayweb/idea_detailed.php/"+data[i]["id"]+stages[data[i]["stage"]]+
-						"'>More Info</a></div></div>");
+						stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
 				}
 			}, 'json');
 		}
