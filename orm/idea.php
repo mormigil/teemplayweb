@@ -42,9 +42,14 @@ class idea{
 		
 	}
 
-	public static function findExpiring($start){
+	public static function findExpiring($start, $current){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
-		$query = "SELECT id FROM ideas ORDER BY time";
+		if($current){
+			$query = "SELECT id FROM ideas WHERE stage != 0 ORDER BY time";
+		}
+		else{
+			$query = "SELECT id FROM ideas WHERE stage = 0 ORDER BY time";
+		}
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
 		$result = $prep->get_result();
@@ -53,16 +58,27 @@ class idea{
 			for($i=$start;$i<($start+10);$i++){
 				$next_row = $result->fetch_row();
 				if($next_row){
-					$ideas[] = idea::findByID($next_row[0]);
+					$idea = idea::findByID($next_row[0]);
+					if($idea->getTimeLeft()>0){
+						$ideas[] = $idea;
+					}
+					else{
+						$idea->chgStage();
+					}
 				}
 			}
 		}
 		return $ideas;
 	}
 
-	public static function findRecent($start){
+	public static function findRecent($start, $current){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
-		$query = "SELECT id FROM ideas ORDER BY time desc";
+		if($current){
+			$query = "SELECT id FROM ideas WHERE stage != 0 ORDER BY time desc";
+		}
+		else{
+			$query = "SELECT id FROM ideas WHERE stage = 0 ORDER BY time desc";
+		}
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
 		$result = $prep->get_result();
@@ -71,7 +87,13 @@ class idea{
 			for($i=$start;$i<($start+10);$i++){
 				$next_row = $result->fetch_row();
 				if($next_row){
-					$ideas[] = idea::findByID($next_row[0]);
+					$idea = idea::findByID($next_row[0]);
+					if($idea->getTimeLeft()>0){
+						$ideas[] = $idea;
+					}
+					else{
+						$idea->chgStage();
+					}
 				}
 			}
 		}
@@ -117,6 +139,13 @@ class idea{
 		return $this->update();
 	}
 
+	public function chgStage(){
+		$this->stage = $this->stage + 1;
+		$this->update();
+	}
+
+
+	//update broken needs to be checked
 	public function update(){
 		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
 		$query = "UPDATE ideas SET userid = ?, title = ?, tweet = ?, description = ?, genre = ?,  
@@ -160,6 +189,10 @@ class idea{
 		return $this->time;
 	}
 
+	public function getTimeLeft(){
+		return ($this->time+30*24*60*60)-time();
+	}
+
 	public function getStage(){
 		return $this->stage;
 	}
@@ -175,6 +208,7 @@ class idea{
 		$json_rep['votes'] = $this->votes;
 		$json_rep['time'] = $this->time;
 		$json_rep['stage'] = $this->stage;
+		$json_rep['timeleft'] = $this->getTimeLeft();
 		return $json_rep;
 	}
 }

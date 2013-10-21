@@ -25,7 +25,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			exit();
 		}
 		else if(empty($_GET['blacklist'])&&!empty($_GET['ideaid'])&&!empty($_GET['type'])){
-			$influences = influence::findByRecentIdea($_GET['ideaid'], $_GET['type'], 0);
+			$influences = influence::findWinner($_GET['ideaid'], $_GET['type'], 0);
 			$influence_ids = array();
 			if($influences==null){
 				header("HTTP/1.1 400 Bad Request");

@@ -17,7 +17,7 @@ require("loggedin.php");
             <a href = "#"><img id = "logoimg" src = "http://localhost/teemplayweb/transparlogo.png" alt = "logo"></img></a>
             <ul id = "nav-menu">
                 <a href = "idea_viewing.php"><li>Imagine</li></a>
-                <a href = "idea_detailed.php"><li>Design</li></a>
+                <a href = "project_viewing.php"><li>Design</li></a>
                 <li>Play</li>
             </ul>
             <div id = "userinfo"></div>

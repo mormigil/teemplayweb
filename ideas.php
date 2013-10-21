@@ -14,6 +14,18 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			print(json_encode($idea->getJSON()));
 			exit();
 		}
+		//get all ideas that are now projects
+		if(!empty($_GET['current'])){
+			$ideas = idea::findExpiring(0, true);
+			$idea_ids = array();
+			foreach($ideas as $t){
+				$idea_ids[] = $t->getJSON();
+			}
+			header("Content-type: application/json");
+			print(json_encode($idea_ids));
+			exit();
+		}
+
 		//find all ideas from a user
 		if(!empty($_GET['userid'])){
 
@@ -27,7 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
 		//if recent delimiter is set then display most recently submitted ideas
 		if(isset($_get['recent'])){
-			$ideas = idea::findRecent(0);
+			$ideas = idea::findRecent(0, false);
 			$idea_ids = array();
 			foreach($ideas as $t){
 				$idea_ids[] = $t->getJSON();
@@ -38,7 +50,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		}
 
 		//if no search delimiters are set then display ideas closest to expiring
-		$ideas = idea::findExpiring(0);
+		$ideas = idea::findExpiring(0, false);
 		$idea_ids = array();
 		foreach($ideas as $t){
 			$idea_ids[] = $t->getJSON();

@@ -4,6 +4,13 @@ function loadIdeas(user, id){
 	var stages = ["/idea_misc", "/story", "/character", "/art", "/mechanics", "/levels",
 		"/price", "/distribution"];
 	user_id = user;
+	var timeLeft;
+	var days;
+	var hours;
+	var mins;
+	var secs;
+	var dateString;
+	var negative;
 	$.get("http://localhost/teemplayweb/votes.php", {userid:user_id}, function(data){
 		idea_ids = data;
 		if(id == 'idea_viewing.php'){
@@ -11,20 +18,86 @@ function loadIdeas(user, id){
 				for(var i = 0; i<data.length; i++){
 					for(var j = 0; j<idea_ids.length; j++){
 						if(data[i]['id']==idea_ids[j]['ideaid']){
+							timeLeft = data[i]["timeleft"];
+							negative = 1;
+							if(timeLeft<0){
+								negative = -1;
+								timeLeft = -timeLeft;
+							}
+							days = Math.floor(timeLeft/86400);
+
+							hours = Math.floor((timeLeft-(days*86400))/3600);
+							mins = Math.floor((timeLeft-(days*86400)-(hours*3600))/60);
+							secs = Math.floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
+							dateString = negative*days + " days " + hours + " hours " + mins + " minutes " + secs + " seconds left";
+							alert(dateString);
 							$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
-							data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
+							data[i]["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
+							"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
 							"' class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button><a href = 'idea_detailed.php/"+
 							data[i]["id"]+stages[data[i]["stage"]]+stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
 							break;
 						}
 					}
 					if(j==idea_ids.length){
+						alert("hi2");
+						timeLeft = data[i]["timeleft"];
+						days = floor(timeLeft/86400);
+						hours = floor((timeLeft-(days*86400))/3600);
+						mins = floor((timeLeft-(days*86400)-(hours*3600))/60);
+						secs = floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
+						dateString = days + " " + hours + " " + mins + " " + secs + "time left";
+						alert(dateString);
 						$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 						"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
-						data[i]["description"]+"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
+						data[i]["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
+						"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
+						"' class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button><a href = 'idea_detailed.php/"+
+							data[i]["id"]+stages[data[i]["stage"]]+stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
+					}
+				}
+			}, 'json');
+		}
+		else if(id=='project_viewing.php'){
+			$.get("ideas.php", {current:true}, function(data){
+				for(var i = 0; i<data.length; i++){
+					for(var j = 0; j<idea_ids.length; j++){
+						if(data[i]['id']==idea_ids[j]['ideaid']){
+							alert("here3");
+							timeLeft = data[i]["timeleft"];
+							days = floor(timeLeft/86400);
+							hours = floor((timeLeft-(days*86400))/3600);
+							mins = floor((timeLeft-(days*86400)-(hours*3600))/60);
+							secs = floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
+							dateString = days + " " + hours + " " + mins + " " + secs + "time left";
+							alert(dateString);
+							$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
+							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
+							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
+							data[i]["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
+							"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
+							"' class = 'voted' id = 'voted"+data[i]["id"]+"'>"+"voted</button><a href = 'idea_detailed.php/"+
+							data[i]["id"]+stages[data[i]["stage"]]+stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
+							break;
+						}
+					}
+					if(j==idea_ids.length){
+						alert("here4");
+						timeLeft = data[i]["timeleft"];
+						days = floor(timeLeft/86400);
+						hours = floor((timeLeft-(days*86400))/3600);
+						mins = floor((timeLeft-(days*86400)-(hours*3600))/60);
+						secs = floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
+						dateString = days + " " + hours + " " + mins + " " + secs + "time left";
+						alert(dateString);
+						$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
+						"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
+						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
+						data[i]["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
+						"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
 						"' class = 'vote' id = 'vote"+data[i]["id"]+"'>"+"vote</button><a href = 'idea_detailed.php/"+
 							data[i]["id"]+stages[data[i]["stage"]]+stages2[data[i]["stage"]]+"'>More Info</a></div></div>");
 					}

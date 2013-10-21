@@ -57,6 +57,25 @@ class influence{
 		return null;
 	}
 
+	public static function findWinner($ideaid, $type){
+		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY votes desc";
+		$influences = array();
+		for($i=0; $i<$type; $i++){
+			$prep = $mysqli->prepare($query);
+			$prep->bind_param('ss', $ideaid, $i);
+			$prep->execute();
+			$result = $prep->get_result();
+			if($result){
+				$next_row = $result->fetch_row();
+				if($next_row){
+					$influences[] = influence::findByID($next_row[0]);
+				}
+			}
+		}
+		return $influences;
+	}
+
 	public static function findByRecentIdea($ideaid, $type, $start){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY time desc";

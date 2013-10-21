@@ -19,7 +19,7 @@ require("loggedin.php");
 			<a href = "#"><img id = "logoimg" src = "http://localhost/teemplayweb/transparlogo.png" alt = "logo"></img></a>
 			<ul id = "nav-menu">
 				<a href = "idea_viewing.php"><li>Imagine</li></a>
-				<a href = "idea_detailed.php"><li>Design</li></a>
+				<a href = "project_viewing.php"><li>Design</li></a>
 				<li>Play</li>
 			</ul>
 			<div id = "userinfo"></div>
@@ -32,7 +32,7 @@ require("loggedin.php");
 				<li><span id = "4"><a href="#art">Art Style</a></span></li>
 				<li><span id = "5"><a href="#mechanics">Core Mechanics</a></span></li>
 				<li><span id = "6"><a href="#levels">Level Design</a></span></li>
-				<li><span id = "7"><a href="#price" class = "inactive">Price</a></p></li>
+				<li><span id = "7"><a href="#price" class = "inactive">Price</a></span></li>
 				<li><span id = "8"><a href="#distribution">Distribution</a></span></li>
 			</ul>
 			<div id ="idea_info"></div>
