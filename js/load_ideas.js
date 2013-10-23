@@ -30,7 +30,7 @@ function loadIdeas(user, id){
 							mins = Math.floor((timeLeft-(days*86400)-(hours*3600))/60);
 							secs = Math.floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
 							dateString = negative*days + " days " + hours + " hours " + mins + " minutes " + secs + " seconds left";
-							alert(dateString);
+							//alert(dateString);
 							$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
@@ -42,14 +42,20 @@ function loadIdeas(user, id){
 						}
 					}
 					if(j==idea_ids.length){
-						alert("hi2");
+						//alert("hi2");
 						timeLeft = data[i]["timeleft"];
-						days = floor(timeLeft/86400);
-						hours = floor((timeLeft-(days*86400))/3600);
-						mins = floor((timeLeft-(days*86400)-(hours*3600))/60);
-						secs = floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
-						dateString = days + " " + hours + " " + mins + " " + secs + "time left";
-						alert(dateString);
+							negative = 1;
+							if(timeLeft<0){
+								negative = -1;
+								timeLeft = -timeLeft;
+							}
+							days = Math.floor(timeLeft/86400);
+
+							hours = Math.floor((timeLeft-(days*86400))/3600);
+							mins = Math.floor((timeLeft-(days*86400)-(hours*3600))/60);
+							secs = Math.floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
+							dateString = negative*days + " days " + hours + " hours " + mins + " minutes " + secs + " seconds left";
+							//alert(dateString);
 						$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 						"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
@@ -66,14 +72,20 @@ function loadIdeas(user, id){
 				for(var i = 0; i<data.length; i++){
 					for(var j = 0; j<idea_ids.length; j++){
 						if(data[i]['id']==idea_ids[j]['ideaid']){
-							alert("here3");
+							//alert("here3");
 							timeLeft = data[i]["timeleft"];
-							days = floor(timeLeft/86400);
-							hours = floor((timeLeft-(days*86400))/3600);
-							mins = floor((timeLeft-(days*86400)-(hours*3600))/60);
-							secs = floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
-							dateString = days + " " + hours + " " + mins + " " + secs + "time left";
-							alert(dateString);
+							negative = 1;
+							if(timeLeft<0){
+								negative = -1;
+								timeLeft = -timeLeft;
+							}
+							days = Math.floor(timeLeft/86400);
+
+							hours = Math.floor((timeLeft-(days*86400))/3600);
+							mins = Math.floor((timeLeft-(days*86400)-(hours*3600))/60);
+							secs = Math.floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
+							dateString = negative*days + " days " + hours + " hours " + mins + " minutes " + secs + " seconds left";
+							//alert(dateString);
 							$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 							"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 							"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+
@@ -85,14 +97,20 @@ function loadIdeas(user, id){
 						}
 					}
 					if(j==idea_ids.length){
-						alert("here4");
+						//alert("here4");
 						timeLeft = data[i]["timeleft"];
-						days = floor(timeLeft/86400);
-						hours = floor((timeLeft-(days*86400))/3600);
-						mins = floor((timeLeft-(days*86400)-(hours*3600))/60);
-						secs = floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
-						dateString = days + " " + hours + " " + mins + " " + secs + "time left";
-						alert(dateString);
+							negative = 1;
+							if(timeLeft<0){
+								negative = -1;
+								timeLeft = -timeLeft;
+							}
+							days = Math.floor(timeLeft/86400);
+
+							hours = Math.floor((timeLeft-(days*86400))/3600);
+							mins = Math.floor((timeLeft-(days*86400)-(hours*3600))/60);
+							secs = Math.floor(timeLeft-(days*86400)-(hours*3600)-(mins*60));
+							dateString = negative*days + " days " + hours + " hours " + mins + " minutes " + secs + " seconds left";
+							//alert(dateString);
 						$("#ideas").append("<div class = 'box' id = 'box" +data[i]["id"]+ "'><div class = 'title'>"+
 						"<h2>"+data[i]["title"]+"</h2></div><div class = 'author'><p>"+data[i]["userid"]+"</p></div>"+
 						"<div class = 'tweet'><p>"+data[i]["tweet"]+"</p></div><div class = 'description'><p>"+

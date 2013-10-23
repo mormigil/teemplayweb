@@ -11,7 +11,7 @@ $(document).ready(function(){
 
 	var user_id = getCookie('username');
 	if(id=='idea_detailed.php'||id===''||id=='teemplayweb'||stageName===''){
-		window.location.replace("http://localhost/teemplayweb/idea_viewing.php");
+		window.location.replace("http://localhost/teemplayweb/project_viewing.php");
 	}
 	else{
 		$.get("http://localhost/teemplayweb/votes.php", {userid:user_id}, function(data){
@@ -53,12 +53,21 @@ $(document).ready(function(){
 		$.get('http://localhost/teemplayweb/votes_influence.php', {userid:user_id}, function(data){
 			var influence_ids = new Array();
 			//grab all the influence ids that the user has already voted on
+			//should be rewritten so all the data is passed at once and then the 
+			//get will be a call that will just return all the influences associated
+			//with the idea and type
 			for(var i = 0; i<data.length; i++){
-				influence_ids[i] = data[i]["influenceid"];
+				if(data[i]["influenceid"]==id){
+					$.get("http://localhost/teemplayweb/influences.php/"+data[i]["influenceid"], function(data){
+						if(data["type"]==stageNum&&data["ideaid"]==id){
+							influence_ids[i] = data[i]["influenceid"];
+						}
+					}, 'json');
+				}
 			}
-			//if there are no influences blacklist should still pass through as null
+			//if there are no influences blacklist should still pass through as a list with zero length
 			if(influence_ids[0]===null||influence_ids[0]===undefined){
-				influence_ids = null;
+				influence_ids[0] = false;
 			}
 			$.get("http://localhost/teemplayweb/influences.php", {ideaid:id, type:stageNum, blacklist:influence_ids}, function(data){
 				for(var i = 0; i<3; i++){
@@ -72,10 +81,10 @@ $(document).ready(function(){
 					"</p></div><div class = 'voteArea'><button value = '"+data[i]['id']+
 					"' class = 'vote_inf' id = 'vote_inf"+data[i]["id"]+"'>"+"vote</button></div></div>");
 				}
-				//Have a way to submit a piece of influence for the current stage
-				$("#"+stageName).append("<div class = 'submit'><a href = '../influence_submission.php/"+id+"#"+stageNum+"'>Submit"+
-					" your own idea</a></div>");
 			}, 'json');
+			//Have a way to submit a piece of influence for the current stage
+				$("#"+stageName).append("<div class = 'submit'><a href = 'http://localhost/teemplayweb/influence_submission.php/"+id+"#"+stageNum+"'>Submit"+
+					" your own idea</a></div>");
 		}, 'json');
 		//have a get to add winners onto old stages
 		$.get("http://localhost/teemplayweb/influences.php", {ideaid:id, type:stageNum}, function(data){

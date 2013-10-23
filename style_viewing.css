@@ -1,0 +1,20 @@
+.box{
+	border: 1px solid black;
+	width: 25%;
+	float: left;
+	height: 300px;
+	margin-left: 5%;
+}
+
+.description{
+	height: 60px;
+	overflow: hidden;
+}
+
+.voted, .vote{
+	margin-right: 5%;
+}
+
+.box > div{
+	text-align: center;
+}

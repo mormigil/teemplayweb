@@ -40,7 +40,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			exit();
 		}
 		else if(!empty($_GET['blacklist'])&&!empty($_GET['ideaid'])&&!empty($_GET['type'])){
-			$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $_GET['blacklist']);
+			if($_GET['blacklist'][0]){
+				$emptyArray = array();
+				$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $emptyArray);
+			}
+			else{
+				$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $_GET['blacklist']);
+			}
 			$influence_ids = array();
 			if($influences==null){
 				header("HTTP/1.1 400 Bad Request");
@@ -68,7 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			exit();
 		}
 		header("Content-type: application/json");
-		print(json_encode($nfluence->getJSON()));
+		print(json_encode($influence->getJSON()));
 		exit();
 	}
 } else if($_SERVER['REQUEST_METHOD'] == 'POST'){

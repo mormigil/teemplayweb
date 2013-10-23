@@ -112,7 +112,7 @@ class influence{
 		$influences = $result->num_rows;
 		$ideas = array();
 		if($result){
-			for($i=$start;$i<($start+10);$i++){
+			for($i=$start;$i<($start+3);$i++){
 				$choice = rand(1, 100);
 				$choice = ceil(($choice*$choice/10000)*($influences));
 				/*print($choice);
@@ -136,12 +136,11 @@ class influence{
 						if($influences == count($votedBlackList)){
 							return $ideas;
 						}
-						$upchoice = $choice++;
 						if($choice<$influences){
 							$choice++;
 						}
 						else{
-							$choice = 0;
+							$choice = 1;
 						}
 						$result->data_seek($choice-1);
 						$row = $result->fetch_row();

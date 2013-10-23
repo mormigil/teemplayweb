@@ -1,0 +1,20 @@
+.inf_box{
+	width: 25%;
+	float: left;
+	border: 1px solid black;
+	margin-left: 5%;
+}
+
+.inf_box > div{
+	text-align: center;
+}
+
+.submit{
+	float: right;
+	height: 50px;
+	width: 100%;
+}
+
+#tabs{
+	height: 800px;
+}

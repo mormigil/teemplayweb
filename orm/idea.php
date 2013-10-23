@@ -59,7 +59,7 @@ class idea{
 				$next_row = $result->fetch_row();
 				if($next_row){
 					$idea = idea::findByID($next_row[0]);
-					if($idea->getTimeLeft()>0){
+					if($idea->getTimeLeft($idea->getStage())>0){
 						$ideas[] = $idea;
 					}
 					else{
@@ -88,7 +88,7 @@ class idea{
 				$next_row = $result->fetch_row();
 				if($next_row){
 					$idea = idea::findByID($next_row[0]);
-					if($idea->getTimeLeft()>0){
+					if($idea->getTimeLeft($idea->getStage())>0){
 						$ideas[] = $idea;
 					}
 					else{
@@ -140,14 +140,24 @@ class idea{
 	}
 
 	public function chgStage(){
-		$this->stage = $this->stage + 1;
+		$newStage = (($this->time+30*24*60*60)+($stage*15*24*60*60))-time();
+
+		$firstTime = (($this->time+30*24*60*60))-time();
+		if($firstTime<0){
+			$stage = -floor($newStage/(15*24*60*60));
+			if($stage>8){
+				$stage = 8;
+			}
+		}
+		else{$stage = 0;}
+		$this->stage = $stage;
 		$this->update();
 	}
 
 
 	//update broken needs to be checked
 	public function update(){
-		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
+		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "UPDATE ideas SET userid = ?, title = ?, tweet = ?, description = ?, genre = ?,  
 			votes = ?, time = ?, stage = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);
@@ -189,8 +199,8 @@ class idea{
 		return $this->time;
 	}
 
-	public function getTimeLeft(){
-		return ($this->time+30*24*60*60)-time();
+	public function getTimeLeft($stage){
+		return ($this->time+30*24*60*60)+($stage*15*24*60*60)-time();
 	}
 
 	public function getStage(){
@@ -208,7 +218,7 @@ class idea{
 		$json_rep['votes'] = $this->votes;
 		$json_rep['time'] = $this->time;
 		$json_rep['stage'] = $this->stage;
-		$json_rep['timeleft'] = $this->getTimeLeft();
+		$json_rep['timeleft'] = $this->getTimeLeft($this->stage);
 		return $json_rep;
 	}
 }
