@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 3.4.5
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 15, 2013 at 07:38 PM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- Generation Time: Oct 23, 2013 at 08:02 PM
+-- Server version: 5.5.16
+-- PHP Version: 5.3.8
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `teemplayweb`
 --
-CREATE DATABASE IF NOT EXISTS `teemplayweb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `teemplayweb`;
 
 -- --------------------------------------------------------
 
@@ -86,17 +84,18 @@ CREATE TABLE IF NOT EXISTS `ideas` (
   `stage` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FOREIGN` (`userid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ideas`
 --
 
 INSERT INTO `ideas` (`id`, `userid`, `title`, `tweet`, `description`, `genre`, `votes`, `time`, `stage`) VALUES
-(1, 6, 'asdf', 'asdf', 'Describe your game here', 'asdf', 23, 1378497058, 5),
-(2, 6, 'secondgame', 'this game will be awesomekthx', 'so lots of text goes here i think or something\nso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or something', 'woooooot', 24, 1378839302, 0),
-(3, 6, 'steve''s game', 'awesome moba esque building game', 'build stuff and win awesome things', 'awesome', 5, 1378839353, 0),
-(4, 6, 'testing ideas', 'On voting and how it works or doesn''t', 'Hopefully it does but man describe your game here needs to be placeholder textDescribe your game here', 'true true', 1, 1381515529, 0);
+(1, 6, 'asdf', 'asdf', 'Describe your game here', 'asdf', 23, 1378497058, 2),
+(2, 6, 'secondgame', 'this game will be awesomekthx', 'so lots of text goes here i think or something\nso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or somethingso lots of text goes here i think or something', 'woooooot', 24, 1378839302, 1),
+(3, 6, 'steve''s game', 'awesome moba esque building game', 'build stuff and win awesome things', 'awesome', 5, 1378839353, 1),
+(4, 6, 'testing ideas', 'On voting and how it works or doesn''t', 'Hopefully it does but man describe your game here needs to be placeholder textDescribe your game here', 'true true', 1, 1381515529, 0),
+(5, 6, 'New Idea', 'This idea is an awesome game', 'so this is where you would describe the game extra length would be cut off though', 'rts', 0, 1382556421, 0);
 
 -- --------------------------------------------------------
 
@@ -117,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `influence` (
   PRIMARY KEY (`id`),
   KEY `user` (`userid`),
   KEY `idea` (`ideaid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `influence`
@@ -126,7 +125,9 @@ CREATE TABLE IF NOT EXISTS `influence` (
 INSERT INTO `influence` (`id`, `userid`, `ideaid`, `title`, `description`, `pics_ref`, `votes`, `type`, `time`) VALUES
 (1, 6, 1, 'New story levle idea', 'Give a description of your addition here awesome super awesome game', 'yoyuds.cz.sa', 0, '5', 1381772706),
 (6, 6, 1, 'New story levle idea', 'Give a description of your addition here awesome super awesome game', 'yoyuds.cz.sa', 1, '5', 1381773026),
-(7, 6, 1, 'Different influence idea', 'A new awesome description for game 1.5\nA new awesome description for game 1.5A new awesome description for game 1.5A new awesome description for game 1.5A new awesome description for game 1.5A new awesome description for game 1.5', 'dfkadjsflk', 1, '5', 1381773085);
+(7, 6, 1, 'Different influence idea', 'A new awesome description for game 1.5\nA new awesome description for game 1.5A new awesome description for game 1.5A new awesome description for game 1.5A new awesome description for game 1.5A new awesome description for game 1.5', 'dfkadjsflk', 1, '5', 1381773085),
+(8, 6, 2, 'new piece of content', 'This will revolutionize game 2 you just wait.', '..dkdk', 0, '1', 1382548060),
+(9, 6, 2, 'just smid', 'sdsdfasdffGive a description of your addition here', 'dsklafj', 0, '1', 1382548119);
 
 -- --------------------------------------------------------
 
