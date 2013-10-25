@@ -16,15 +16,9 @@ require("loggedin.php");
 </head>
 <body>
 	<div id = "wrapper">
-		<div id = "header">
-			<a href = "#"><img id = "logoimg" src = "http://localhost/teemplayweb/transparlogo.png" alt = "logo"></img></a>
-			<ul id = "nav-menu">
-				<a href = "http://localhost/teemplayweb/idea_viewing.php"><li>Imagine</li></a>
-				<a href = "http://localhost/teemplayweb/project_viewing.php"><li>Design</li></a>
-				<li>Play</li>
-			</ul>
-			<div id = "userinfo"></div>
-		</div>
+		<?php
+		include "header.php";
+		?>
 		<div id = "tabs">
 			 <ul>
 				<li><span id = "1"><a href="#idea_misc">Idea</a></span></li>

@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang = "en" style="height: 100%;">
-
-<html>
-<head>
-	<meta charset = "utf-8">
-	<meta description = "Crowd sourcing game ideas to bring people's favorite ideas to reality.">
-	<link rel = stylesheet href = "competition.css" media = "screen and (min-width: 800px)" type = "text/css">
-</head>
-</html> 
+<div id = "header">
+	<a href = "#"><img id = "logoimg" src = "http://localhost/teemplayweb/transparlogo.png" alt = "logo"></img></a>
+	<ul id = "nav-menu">
+		<a href = "http://localhost/teemplayweb/inspiration_viewing.php"><li>Inspire</li></a>
+		<a href = "http://localhost/teemplayweb/idea_viewing.php"><li>Imagine</li></a>
+		<a href = "http://localhost/teemplayweb/project_viewing.php"><li>Design</li></a>
+		<li>Play</li>
+	</ul>
+	<div id = "userinfo"></div>
+</div>
