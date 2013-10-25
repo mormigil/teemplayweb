@@ -33,7 +33,7 @@ function loadIdeas(user, id){
 	user_id = user;
 
 	//submitted ideas location for the first 30 days
-	$.get("http://localhost/teemplayweb/votes.php", {userid:user_id}, function(data){
+	$.get("http://localhost/teemplayweb/votes_idea.php", {userid:user_id}, function(data){
 		idea_ids = data;
 		if(id == 'idea_viewing.php'){
 			$.get("ideas.php", function(data){
@@ -91,7 +91,7 @@ function loadIdeas(user, id){
 
 $(document).on("click", ".vote", function(){
 	var userid = getCookie('username');
-	$.post("votes.php", {ideaid: $(this).val(), userid: userid}, function(){
+	$.post("votes_idea.php", {ideaid: $(this).val(), userid: userid}, function(){
 		alert("voted!");
 	});
 });
