@@ -132,6 +132,7 @@ class influence{
 				$row = $result->fetch_row();
 				if($row){
 					$id = $row[0];
+					$k = 0;
 					while(in_array($id, $votedBlackList)){
 						if($influences == count($votedBlackList)){
 							return $ideas;
@@ -147,6 +148,10 @@ class influence{
 						if($row){
 							$id = $row[0];
 						}
+						if($k>4){
+							break;
+						}
+						$k++;
 					}
 					$ideas[] = influence::findByID($row[0]);
 					$votedBlackList[] = $row[0];
@@ -186,6 +191,14 @@ class influence{
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
 		return $result;
+	}
+
+	public function getType(){
+		return $this->type;
+	}
+
+	public function getIdeaID(){
+		return $this->ideaid;
 	}
 
 	public function getJSON(){

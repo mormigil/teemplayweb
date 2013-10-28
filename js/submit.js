@@ -18,7 +18,6 @@ $(document).on('click', '#gameidea', function(){
 
 $(document).on('click', '#influenceidea', function(){
 	var user_id = getCookie('username');
-	alert("clicking");
 	var pathArray = window.location.pathname.split('/');
 	var id = pathArray[pathArray.length-1];
 	var hash = window.location.hash.substring(1);
@@ -27,6 +26,24 @@ $(document).on('click', '#influenceidea', function(){
 		url: 'http://localhost/teemplayweb/influences.php',
 		data: {userid: user_id, ideaid: id, title: $("#title").val(), pics_ref: $("#pics_ref").val(),
 			description: $("#description").val(), type: hash},
+		dataType: 'json',
+		success: function(data){
+			alert("ran through");
+		},
+		error: function(data, error){
+			console.debug(data);
+			console.debug(error);
+		}
+	});
+});
+
+$(document).on('click', '#inspiration', function(){
+	var user_id = getCookie('username');
+	$.ajax({
+		type: 'POST',
+		url: 'http://localhost/teemplayweb/inspirations.php',
+		data: {userid: user_id, title: $("#title").val(), tweet: $("#tweet").val(), description:
+		$("#description").val(), url: $("#url").val(), pic: $("#pic"), vid: ("#vid")},
 		dataType: 'json',
 		success: function(data){
 			alert("ran through");

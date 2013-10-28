@@ -24,6 +24,30 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			print(json_encode($influence_ids));
 			exit();
 		}
+		else if(empty($_GET['blacklist'])&&!empty($_GET['influences'])&&!empty($_GET['ideaid'])
+			&&!empty($_GET['type'])){
+			$influences = array();
+			//for each influence in the array test and put it in a blacklist array
+			for($i=0; $i<=count($_GET['influences'])-1; $i++){
+				$id = $_GET['influences'][$i];
+				$id = $id['linkedid'];
+				$influence = influence::findByID($id);
+				if($influence->getType()==$_GET['type']&&$influence->getIdeaID()==$_GET['ideaid']){
+					$influences[] = $influence;
+				}
+			}
+			if($influences==null){
+				header("HTTP/1.1 400 Bad Request");
+				print("No results found for the blacklist");
+				exit();
+			}
+			foreach($influences as $t){
+				$influence_ids[] = $t->getJSON();
+			}
+			header("Content-type:application/json");
+			print(json_encode($influence_ids));
+			exit();
+		}
 		else if(empty($_GET['blacklist'])&&!empty($_GET['ideaid'])&&!empty($_GET['type'])){
 			$influences = influence::findWinner($_GET['ideaid'], $_GET['type'], 0);
 			$influence_ids = array();
@@ -39,14 +63,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			print(json_encode($influence_ids));
 			exit();
 		}
+		//if there is a blacklist passed in
 		else if(!empty($_GET['blacklist'])&&!empty($_GET['ideaid'])&&!empty($_GET['type'])){
-			if($_GET['blacklist'][0]){
-				$emptyArray = array();
-				$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $emptyArray);
-			}
-			else{
-				$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $_GET['blacklist']);
-			}
+			//if there is an element in the blacklist
+			$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $_GET['blacklist']);
 			$influence_ids = array();
 			if($influences==null){
 				header("HTTP/1.1 400 Bad Request");

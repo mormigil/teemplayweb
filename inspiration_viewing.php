@@ -18,7 +18,7 @@ require("loggedin.php");
 		include "header.php";
 		?>
 		<div id = "submissions">
-			<a href = "../teemplayweb/idea_submission.php">Click here to submit your own inspiration</a></div>
+			<a href = "../teemplayweb/inspiration_submission.php">Click here to submit your own inspiration</a></div>
 		<div id = "inspirations">
 		</div><!--#inspirations-->
 	</div><!--#wrapper-->

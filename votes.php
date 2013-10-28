@@ -23,8 +23,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		//find all votes cast from a user
 		//votes will need some kind of expiration mechanic so that this query is limited to no more than roughly
 		//300 votes
-		if(!empty($_GET['userid'])&&empty($_GET['ideaid'])){
-			$votes = vote::findByUser($_GET['userid'], 0);
+		if(!empty($_GET['userid'])&&!empty($_GET['type'])&&empty($_GET['linkedid'])){
+			$votes = vote::findByUser($_GET['userid'], $_GET['type']);
 			$vote_ids = array();
 			foreach($votes as $t){
 				$vote_ids[] = $t->getJSON();
@@ -34,8 +34,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			exit();
 		}
 		//find all votes from an idea
-		else if(!empty($_GET['ideaid'])&&empty($_GET['userid'])){
-			$votes = vote::findByIdea($_GET['ideaid'], 0);
+		else if(!empty($_GET['linkedid'])&&!empty($_GET['type'])&&empty($_GET['userid'])){
+			$votes = vote::findByIdea($_GET['linkedid'], $_GET['type']);
 			$vote_ids = array();
 			foreach($votes as $t){
 				$vote_ids[] = $t->getJSON();
@@ -44,9 +44,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			print(json_encode($idea_ids));
 			exit();
 		}
-		//find the vote of userid on ideaid
-		else if(!empty($_GET['ideaid'])){
-			$vote = vote::findByIdeaAndUser($_GET['ideaid'], $_GET['userid']);
+		//find the vote of userid on linkedid
+		else if(!empty($_GET['linkedid'])&&!empty($_GET['type'])){
+			$vote = vote::findByIdeaAndUser($_GET['linkedid'], $_GET['userid'], $_GET['type']);
 			if($vote == null){
 				header("HTTP/1.1 400 Bad Request");
 				print("bad user or idea id");
@@ -56,9 +56,19 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			print(json_encode($vote->getJSON()));
 			exit();
 		}
+		else if(empty($_GET['type'])){
+			header("HTTP/1.1 400 Bad Request");
+			print("Need a type");
+			exit();
+		}
+		else{
+			header("HTTP/1.1 400 Bad Request");
+			print("Need a type and some form of id");
+			exit();
+		}
 
 	} else {
-
+		
 	}
 } else if($_SERVER['REQUEST_METHOD'] = 'POST'){
 	if(empty($_SERVER['PATH_INFO'])){
@@ -67,12 +77,17 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 			print("Valid user must submit");
 			exit();
 		}
-		if(empty($_POST['ideaid'])){
+		if(empty($_POST['linkedid'])){
 			header("HTTP/1.1 400 Bad Request");
 			print("Vote must be cast on valid idea");
 			exit();
 		}
-		$vote = vote::createVote(NULL, $_POST['ideaid'], $_POST['userid']);
+		if(empty($_POST['type'])){
+			header("HTTP/1.1 400 Bad Request");
+			print("Vote must have a type");
+			exit();
+		}
+		$vote = vote::createVote(NULL, $_POST['linkedid'], $_POST['userid'], $_POST['type']);
 		if($vote){
 			header("Content-type: application/json");
 			print(json_encode($vote->getJSON()));

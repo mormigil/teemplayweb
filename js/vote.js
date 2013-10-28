@@ -1,4 +1,4 @@
-//8WhGjgHaf8LS
+
 function voted(id){
 	$('.vote').remove();
 	var total = 0;

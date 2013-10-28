@@ -13,7 +13,19 @@ function dateToText(timeLeft){
 	return date;
 }
 
-function append(data, stages, stages2){
+function appendVote(data, stages, stages2){
+	timeLeft = data["timeleft"];
+	dateString = dateToText(timeLeft);
+	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
+	"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
+	"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
+	data["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
+	"</p></div><div class = 'voteArea'><button value = '"+data['id']+
+	"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button><a href = 'idea_detailed.php/"+
+	data["id"]+stages[data["stage"]]+stages2[data["stage"]]+"'>More Info</a></div></div>");
+}
+
+function appendVoted(data, stages, stages2){
 	timeLeft = data["timeleft"];
 	dateString = dateToText(timeLeft);
 	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
@@ -33,21 +45,26 @@ function loadIdeas(user, id){
 	user_id = user;
 
 	//submitted ideas location for the first 30 days
-	$.get("http://localhost/teemplayweb/votes.php", {userid:user_id}, function(data){
+	$.get("http://localhost/teemplayweb/votes.php", {type: 1, userid:user_id}, function(data){
 		idea_ids = data;
 		if(id == 'idea_viewing.php'){
 			$.get("ideas.php", function(data){
+				//**NOTE probably a faster way to do this -- come back for more elegant solution
+				//need to run through the ideas to see if it has been voted on already
 				for(var i = 0; i<data.length; i++){
 					for(var j = 0; j<idea_ids.length; j++){
-						if(data[i]['id']==idea_ids[j]['ideaid']){
+						if(data[i]['id']==idea_ids[j]['linkedid']){
 							idea = data[i];
-							append(idea, stages, stages2);
+							//if it has append the voted section
+							appendVoted(idea, stages, stages2);
 							break;
 						}
 					}
+					//if there was no evidence of a vote
 					if(j==idea_ids.length){
 						idea = data[i];
-						append(idea, stages, stages2);
+						//append the vote section
+						appendVote(idea, stages, stages2);
 						}
 				}
 			}, 'json');
@@ -58,15 +75,15 @@ function loadIdeas(user, id){
 			$.get("ideas.php", {current:true}, function(data){
 				for(var i = 0; i<data.length; i++){
 					for(var j = 0; j<idea_ids.length; j++){
-						if(data[i]['id']==idea_ids[j]['ideaid']){
+						if(data[i]['id']==idea_ids[j]['linkedid']){
 							idea = data[i];
-							append(idea, stages, stages2);
+							appendVoted(idea, stages, stages2);
 							break;
 						}
 					}
 					if(j==idea_ids.length){
 						idea = data[i];
-						append(idea, stages, stages2);
+						appendVote(idea, stages, stages2);
 					}
 				}
 			}, 'json');
@@ -76,13 +93,13 @@ function loadIdeas(user, id){
 		else{
 			$.get('http://localhost/teemplayweb/ideas.php/'+id, function(data){
 			for(var j = 0; j<idea_ids.length; j++){
-					if(data['id']==idea_ids[j]['ideaid']){
-						append(data, stages, stages2);
+					if(data['id']==idea_ids[j]['linkedid']){
+						appendVoted(data, stages, stages2);
 						break;
 					}
 				}
 				if(j==idea_ids.length){
-					append(data, stages, stages2);
+					appendVote(data, stages, stages2);
 				}
 			}, 'json');
 		}
@@ -91,7 +108,7 @@ function loadIdeas(user, id){
 
 $(document).on("click", ".vote", function(){
 	var userid = getCookie('username');
-	$.post("votes.php", {ideaid: $(this).val(), userid: userid}, function(){
+	$.post("votes.php", {linkedid: $(this).val(), userid: userid, type: 1}, function(){
 		alert("voted!");
 	});
 });
