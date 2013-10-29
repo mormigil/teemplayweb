@@ -56,23 +56,21 @@ $(document).on("click", ".vote", function(){
 });
 
 function appendVote(data){
-	timeLeft = data["timeleft"];
-	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
+	$("#inspirations").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
 	"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
 	"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
 	data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
-	"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button><a href = 'idea_detailed.php/"+
-	"'>More Info</a></div></div>");
+	"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button><a href = 'inspiration_detailed.php/"+
+	data['id']+"'>More Info</a></div></div>");
 }
 
 function appendVoted(data){
-	timeLeft = data["timeleft"];
-	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
+	$("#inspirations").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
 	"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
 	"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
 	data["description"]+"</p></div><div class = 'voteArea'><button value = '"+data['id']+
-	"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button><a href = 'idea_detailed.php/"+
-	"'>More Info</a></div></div>");
+	"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button><a href = 'inspiration_detailed.php/"+
+	data['id']+"'>More Info</a></div></div>");
 }
 
 function getCookie(c_name){

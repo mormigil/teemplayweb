@@ -28,9 +28,9 @@ class inspiration{
 		$votes, $time, $pic, $vid){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
 		$query = "INSERT INTO inspirations (id, userid, title, tweet, description, url, votes,
-			time, pic, vid) VALUES (?,?,?,?,?,?,?,?,?,?)";
+			time, pic, vid) VALUES(?,?,?,?,?,?,?,?,?,?)";
 		$prep = $mysqli->prepare($query);
-		$prep->bind_param("sssssssssss", $id, $userid, $title, $tweet, $description, $url,
+		$prep->bind_param("ssssssssss", $id, $userid, $title, $tweet, $description, $url,
 			$votes, $time, $pic, $vid);
 		if($prep->execute()){
 			$id = $mysqli->insert_id;

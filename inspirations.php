@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		}
 
 		//if no search delimiters are set then display inspirations closest to expiring
-		$inspirations = inspiration::findRecent(0);
+		$inspirations = inspiration::findNew(0);
 		$inspiration_ids = array();
 		foreach($inspirations as $t){
 			$inspiration_ids[] = $t->getJSON();
@@ -84,10 +84,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		//If no id we are submitting a new inspiration
 		if(empty($_POST['id'])){
 			if(!empty($_POST['title'])&&!empty($_POST['tweet'])&&!empty($_POST['description'])){
-				$url = (empty($_POST['url'])) ? NULL : $_POST['url'];
-				$pic = (empty($_POST['pic'])) ? NULL : $_POST['pic'];
-				$vid = (empty($_POST['vid'])) ? NULL : $_POST['vid'];
-				$inspiration = inspiration::createinspiration(NULL, $_POST['userid'], 
+				$url = (empty($_POST['url'])) ? "" : $_POST['url'];
+				$pic = (empty($_POST['pic'])) ? "" : $_POST['pic'];
+				$vid = (empty($_POST['vid'])) ? "" : $_POST['vid'];
+				$inspiration = inspiration::createInspiration(NULL, $_POST['userid'], 
 					$_POST['title'], $_POST['tweet'],$_POST['description'], $url,
 					'0', time(), $pic, $vid);
 				header("Content-type: application/json");

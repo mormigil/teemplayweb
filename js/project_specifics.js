@@ -1,10 +1,18 @@
 $(document).ready(function(){
+	window.scrollTo(0,0);
 	var pathArray = window.location.pathname.split('/');
-	var id = pathArray[pathArray.length-1];
+	var id = pathArray[pathArray.length-2];
+	var stageName = pathArray[pathArray.length-1];
+	var stageNum = getStageNumber(stageName);
+	$(function(){
+		$( "#tabs" ).tabs({
+			selected: stageNum
+		});
+	});
 
 	var user_id = getCookie('username');
-	if(id=='idea_detailed.php'||id===''){
-		window.location.replace("http://localhost/teemplayweb/idea_viewing.php");
+	if(id=='project_detailed.php'||id===''||id=='teemplayweb'||stageName===''){
+		window.location.replace("http://localhost/teemplayweb/project_viewing.php");
 	}
 	else{
 		$.get("http://localhost/teemplayweb/votes.php", {userid:user_id, type:1}, function(data){
@@ -41,14 +49,14 @@ $(document).ready(function(){
 			//should be rewritten so all the data is passed at once and then the 
 			//get will be a call that will just return all the influences associated
 			//with the idea and type
-			$.get("http://localhost/teemplayweb/influences.php", {influences: data,
-				type: stageNum, ideaid:id}, function(data){
+			$.ajax({
+				type: 'GET',
+				url: "http://localhost/teemplayweb/influences.php",
+				data: {influences: data, type: stageNum, ideaid:id},
+				dataType: 'json',
+				success: function(data){
 					for(var i = 0; i<data.length; i++){
 						influence_ids[i] = data[i]['id'];
-					}
-					//if there are no influences blacklist should still pass through as a list with zero length
-					if(influence_ids[0]===null||influence_ids[0]===undefined){
-						influence_ids[0] = false;
 					}
 					$.get("http://localhost/teemplayweb/influences.php", {ideaid:id, type:stageNum, blacklist:influence_ids}, function(data){
 						for(var i = 0; i<3; i++){
@@ -61,7 +69,23 @@ $(document).ready(function(){
 							appendInf(influence, tempStage);
 							}
 					}, 'json');
-				}, 'json');
+					$("#"+stageName).addClass("height");
+				},
+				error: function(data){
+					$.get("http://localhost/teemplayweb/influences.php", {ideaid:id, type:stageNum, blacklist:5}, function(data){
+						for(var i = 0; i<3; i++){
+							if(i>=data.length){
+								break;
+							}
+							//have 3 current pieces of influence shown
+							tempStage = stageName;
+							influence = data[i];
+							appendInf(influence, tempStage);
+							}
+					}, 'json');
+					$("#"+stageName).addClass("height");
+				}
+			});
 			
 			//Have a way to submit a piece of influence for the current stage
 				$("#"+stageName).append("<div class = 'submit'><a href = 'http://localhost/teemplayweb/influence_submission.php/"+id+"#"+stageNum+"'>Submit"+

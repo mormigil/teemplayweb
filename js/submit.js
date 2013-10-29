@@ -43,7 +43,7 @@ $(document).on('click', '#inspiration', function(){
 		type: 'POST',
 		url: 'http://localhost/teemplayweb/inspirations.php',
 		data: {userid: user_id, title: $("#title").val(), tweet: $("#tweet").val(), description:
-		$("#description").val(), url: $("#url").val(), pic: $("#pic"), vid: ("#vid")},
+		$("#description").val(), url: $("#url").val(), pic: $("#pic").val(), vid: $("#vid").val()},
 		dataType: 'json',
 		success: function(data){
 			alert("ran through");

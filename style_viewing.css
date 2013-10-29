@@ -1,10 +1,25 @@
 .box{
-	border: 1px solid black;
 	width: 25%;
 	float: left;
-	height: 300px;
 	margin-left: 5%;
+	margin-bottom: 2%;
+	background-color: #fff;
+	padding-bottom: 2%;
+	border-radius: 15px;
 }
+
+#submissions{
+	margin-left: 5%;
+	width: 10%;
+	float: left;
+}
+
+#ideas, #inspirations{
+	width: 80%;
+	float: left;
+}
+
+
 
 .description{
 	height: 60px;

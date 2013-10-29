@@ -13,7 +13,7 @@ function dateToText(timeLeft){
 	return date;
 }
 
-function appendVote(data, stages, stages2){
+function appendVote(data){
 	timeLeft = data["timeleft"];
 	dateString = dateToText(timeLeft);
 	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
@@ -22,10 +22,10 @@ function appendVote(data, stages, stages2){
 	data["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
 	"</p></div><div class = 'voteArea'><button value = '"+data['id']+
 	"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button><a href = 'idea_detailed.php/"+
-	data["id"]+stages[data["stage"]]+stages2[data["stage"]]+"'>More Info</a></div></div>");
+	data["id"]+"'>More Info</a></div></div>");
 }
 
-function appendVoted(data, stages, stages2){
+function appendVoted(data){
 	timeLeft = data["timeleft"];
 	dateString = dateToText(timeLeft);
 	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
@@ -34,6 +34,30 @@ function appendVoted(data, stages, stages2){
 	data["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
 	"</p></div><div class = 'voteArea'><button value = '"+data['id']+
 	"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button><a href = 'idea_detailed.php/"+
+	data["id"]+"'>More Info</a></div></div>");
+}
+
+function appendProjectVote(data, stages, stages2){
+	timeLeft = data["timeleft"];
+	dateString = dateToText(timeLeft);
+	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
+	"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
+	"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
+	data["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
+	"</p></div><div class = 'voteArea'><button value = '"+data['id']+
+	"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button><a href = 'project_detailed.php/"+
+	data["id"]+stages[data["stage"]]+stages2[data["stage"]]+"'>More Info</a></div></div>");
+}
+
+function appendProjectVoted(data, stages, stages2){
+	timeLeft = data["timeleft"];
+	dateString = dateToText(timeLeft);
+	$("#ideas").append("<div class = 'box' id = 'box" +data["id"]+ "'><div class = 'title'>"+
+	"<h2>"+data["title"]+"</h2></div><div class = 'author'><p>"+data["userid"]+"</p></div>"+
+	"<div class = 'tweet'><p>"+data["tweet"]+"</p></div><div class = 'description'><p>"+
+	data["description"]+"</p></div><div class = 'timeleft'><p>"+dateString+
+	"</p></div><div class = 'voteArea'><button value = '"+data['id']+
+	"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button><a href = 'project_detailed.php/"+
 	data["id"]+stages[data["stage"]]+stages2[data["stage"]]+"'>More Info</a></div></div>");
 }
 
@@ -77,13 +101,13 @@ function loadIdeas(user, id){
 					for(var j = 0; j<idea_ids.length; j++){
 						if(data[i]['id']==idea_ids[j]['linkedid']){
 							idea = data[i];
-							appendVoted(idea, stages, stages2);
+							appendProjectVoted(idea, stages, stages2);
 							break;
 						}
 					}
 					if(j==idea_ids.length){
 						idea = data[i];
-						appendVote(idea, stages, stages2);
+						appendProjectVote(idea, stages, stages2);
 					}
 				}
 			}, 'json');

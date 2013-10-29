@@ -25,7 +25,7 @@ require("loggedin.php");
     <br><br>
     description:<br>
     <textarea rows = "8" cols = "60" id = "description">Describe your game here</textarea>
-    <br><br>
+    <br><br>Genre:<br>
     <input type="text" id="genre" value="">
     <br><br>
     <input type="submit" id = "gameidea" value="Imagine"> 

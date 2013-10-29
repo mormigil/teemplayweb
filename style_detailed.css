@@ -16,5 +16,9 @@
 }
 
 #tabs{
-	height: 800px;
+	padding-bottom: 3%;
+}
+
+.height{
+	height: 200px;
 }

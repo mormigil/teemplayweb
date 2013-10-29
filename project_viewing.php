@@ -17,6 +17,9 @@ require("loggedin.php");
 		<?php
 		include "header.php";
 		?>
+		<div id = "submissions">
+			<button id = "change">Change</button>
+		</div>
 		<div id = "ideas">
 		</div><!--#ideas-->
 	</div><!--#wrapper-->

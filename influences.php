@@ -66,8 +66,14 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		//if there is a blacklist passed in
 		else if(!empty($_GET['blacklist'])&&!empty($_GET['ideaid'])&&!empty($_GET['type'])){
 			//if there is an element in the blacklist
-			$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $_GET['blacklist']);
 			$influence_ids = array();
+			if($_GET['blacklist']!=5){
+				$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $_GET['blacklist']);
+			}
+			else{
+				$influences = influence::findByVoteIdea($_GET['ideaid'], $_GET['type'], 0, $influence_ids);
+			}
+			
 			if($influences==null){
 				header("HTTP/1.1 400 Bad Request");
 				print("No results found for your request");
