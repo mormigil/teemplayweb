@@ -24,12 +24,36 @@ class inspiration{
 		$this->vid = $vid;
 	}
 
+	private function upload($file){
+		error_reporting(E_ALL);
+		ini_set("display_errors", 1);
+		$target = "C:/wamp/www/teemplayweb/uploads/";
+		$filehash = md5_file($file['tmp_name']);
+		$name = $filehash . basename($file['name']);
+		$target = $target . $name;
+		if(move_uploaded_file($file['tmp_name'], $target))
+		/*{
+			echo "The file ". $target."has been uploaded,
+			and your information has been added to the directory";
+		}
+		else{
+			echo "Sorry, there was a problem uploading your file.";
+		}*/
+		return $name;
+	}
+
 	public static function createInspiration($id, $userid, $title, $tweet, $description, $url,
 		$votes, $time, $pic, $vid){
 		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		if($pic){
+			$pic = inspiration::upload($pic);
+		}
 		$query = "INSERT INTO inspirations (id, userid, title, tweet, description, url, votes,
 			time, pic, vid) VALUES(?,?,?,?,?,?,?,?,?,?)";
 		$prep = $mysqli->prepare($query);
+		if($mysqli->error){
+			print($mysqli->error);
+		}
 		$prep->bind_param("ssssssssss", $id, $userid, $title, $tweet, $description, $url,
 			$votes, $time, $pic, $vid);
 		if($prep->execute()){

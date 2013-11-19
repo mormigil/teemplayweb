@@ -37,23 +37,49 @@ $(document).on('click', '#influenceidea', function(){
 	});
 });
 
-$(document).on('click', '#inspiration', function(){
+$('#pic').change(function(){
+    var file = this.files[0];
+    name = file.name;
+    size = file.size;
+    type = file.type;
+    //Your validation
+});
+
+$(document).on('click', ':button', function(){
 	var user_id = getCookie('username');
+	var formData = new FormData($('form')[0]);
+	formData.append("userid", user_id);
 	$.ajax({
-		type: 'POST',
 		url: 'http://localhost/teemplayweb/inspirations.php',
-		data: {userid: user_id, title: $("#title").val(), tweet: $("#tweet").val(), description:
-		$("#description").val(), url: $("#url").val(), pic: $("#pic").val(), vid: $("#vid").val()},
-		dataType: 'json',
+		type:'POST',
+		xhr: function() {  // Custom XMLHttpRequest
+            var myXhr = $.ajaxSettings.xhr();
+            if(myXhr.upload){ // Check if upload property exists
+                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+            }
+            return myXhr;
+        },
+        beforeSend: alert("working"),
 		success: function(data){
 			alert("ran through");
+
 		},
 		error: function(data, error){
 			console.debug(data);
 			console.debug(error);
-		}
+		},
+		data: formData,
+		cache: false,
+        contentType: false,
+        processData: false
 	});
 });
+
+function progressHandlingFunction(e){
+    if(e.lengthComputable){
+        $('progress').attr({value:e.loaded,max:e.total});
+    }
+}
 /* Would be used if you could change an idea after submitting it. 
 $(document).on('click', '#changeidea', function(){
 	var user = getCookie('username');

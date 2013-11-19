@@ -85,7 +85,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		if(empty($_POST['id'])){
 			if(!empty($_POST['title'])&&!empty($_POST['tweet'])&&!empty($_POST['description'])){
 				$url = (empty($_POST['url'])) ? "" : $_POST['url'];
-				$pic = (empty($_POST['pic'])) ? "" : $_POST['pic'];
+				$pic = (empty($_FILES['pic'])) ? "" : $_FILES['pic'];
 				$vid = (empty($_POST['vid'])) ? "" : $_POST['vid'];
 				$inspiration = inspiration::createInspiration(NULL, $_POST['userid'], 
 					$_POST['title'], $_POST['tweet'],$_POST['description'], $url,

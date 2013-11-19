@@ -50,7 +50,7 @@ function loadInspirations(user, id){
 
 $(document).on("click", ".vote", function(){
 	var userid = getCookie('username');
-	$.post("votes.php", {ideaid: $(this).val(), userid: userid, type: 3}, function(){
+	$.post("votes.php", {linkedid: $(this).val(), userid: userid, type: 3}, function(){
 		alert("voted!");
 	});
 });

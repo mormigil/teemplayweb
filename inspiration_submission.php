@@ -9,32 +9,37 @@ require("loggedin.php");
 	<link rel = stylesheet href = "style.css" type = "text/css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src = "js/submit.js"></script>
+    <script src = "js/filedrop.js"
     <script src="http://localhost/teemplayweb/js/user_info.js"></script>
 </head>
 <body>
 	<div id = "wrapper">
        <?php
-        include "header.php";
-        ?>
-		<div id = "main">
-				Title:<br>
-    <input type="text" id="title" value="">
-    <br><br>
-    Tweet:<br>
-    <input type="text" id="tweet" value="">
-    <br><br>
-    Description:<br>
-    <textarea rows = "8" cols = "30" id = "description">Describe your game here</textarea>
-    <br><br>
-    Link:<br>
-    <input type="text" id="url" value="">
-    <br><br>Picture:<br>
-    <input type = "text" id = "pic" value = "">
-    <br><br>Video:<br>
-    <input type = "text" id = "vid" value = "">
-    <br><br>
-    <input type="submit" id = "inspiration" value="Imagine">
+       include "header.php";
+       ?>
+	   <div id = "main">
+	       Title:<br>
+            <form enctype="multipart/form-data">
+                <input type="text" name="title" value="">
+                <br><br>
+                Tweet:<br>
+                <input type="text" name="tweet" value="">
+                <br><br>
+                Description:<br>
+                <textarea rows = "8" cols = "30" name = "description">Describe your game here</textarea>
+                <br><br>
+                Link:<br>
+                <input type="text" name="url" value="">
+                <br><br>Picture:<br>
+                <input type = "file" name = "pic" id = "pic" value = "">
+                <br><br>Video:<br>
+                <input type = "text" name = "vid" id = "vid" value = "">
+                <br><br>
+                <input type="button" id = "inspiration" value="Imagine">
+            </form>
+            <progress></progress>
 		</div><!--main-->
 	</div><!--wrapper-->
 </body>
 </html>
+<!--Raytheon-->

@@ -26,13 +26,19 @@ class vote{
 				$prep->bind_param('ssss', $id, $linkedid, $userid, $type);
 				if($prep->execute()){
 					$id = $mysqli->insert_id;
-					vote::updateIdea($mysqli, $linkedid);
+					if($type==1)
+						$query2 = "UPDATE ideas SET votes = ? WHERE id = ?";
+					else if ($type == 2)
+						$query2 = "UPDATE influence SET votes = ? WHERE id = ?";
+					else if ($type == 3)
+						$query2 = "UPDATE inspirations SET votes = ? WHERE id = ?";
+					vote::updateLinked($mysqli, $linkedid, $query2);
 					vote::updateUser($mysqli, $userid);
 					return new vote($id, $linkedid, $userid, $type);
 				}
 				return null;
 			}
-			catch(PDOException $pdo){
+			catch(mysqli_sql_exceptions $e){
 				printf("Errormessage: %s\n", $mysqli->error);
 				die("failed to run query");
 			}
@@ -40,9 +46,8 @@ class vote{
 	return null;	
 	}
 
-	private static function updateIdea($mysqli, $linkedid){
+	private static function updateLinked($mysqli, $linkedid, $query2){
 		$query = "SELECT COUNT(*) FROM vote WHERE linkedid = ?";
-		$query2 = "UPDATE ideas SET votes = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $linkedid);
 		$prep->execute();
