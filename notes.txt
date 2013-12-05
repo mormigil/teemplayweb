@@ -4,3 +4,9 @@ make sure that if there is a parser error only json is in the response with no o
 :: calls must be to static functions
 
 make sure to set background-attachment to fixed for full page backgrounds it is the key to not being weird with scrolling
+
+git fetch origin
+git reset --hard origin/branch
+
+fetches from remote then resets head information and indexing.
+
