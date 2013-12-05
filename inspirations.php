@@ -75,7 +75,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		}
 
 		//no fields were changed
-		if(empty($_POST['title'])&&empty($_POST['tweet'])&&empty($_POST['description'])){
+		if(empty($_POST['title'])&&empty($_POST['description'])){
 			header("HTTP/1.1 400 Bad Request");
 			print("You must change at least one field");
 			exit();
@@ -83,13 +83,30 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		
 		//If no id we are submitting a new inspiration
 		if(empty($_POST['id'])){
-			if(!empty($_POST['title'])&&!empty($_POST['tweet'])&&!empty($_POST['description'])){
-				$url = (empty($_POST['url'])) ? "" : $_POST['url'];
-				$pic = (empty($_FILES['pic'])) ? "" : $_FILES['pic'];
-				$vid = (empty($_POST['vid'])) ? "" : $_POST['vid'];
+			//three types with picture, video, or url
+			if(!empty($_POST['title'])&&!empty($_POST['description'])
+				&&!empty($_POST['url'])){
 				$inspiration = inspiration::createInspiration(NULL, $_POST['userid'], 
-					$_POST['title'], $_POST['tweet'],$_POST['description'], $url,
-					'0', time(), $pic, $vid);
+					$_POST['title'], null, $_POST['description'], $_POST['url'],
+					'0', time(), null, null);
+				header("Content-type: application/json");
+				print(json_encode($inspiration->getJSON()));
+				exit();
+			}
+			else if(!empty($_POST['title'])&&!empty($_POST['description'])
+				&&!empty($_POST['pic'])){
+				$inspiration = inspiration::createInspiration(NULL, $_POST['userid'], 
+					$_POST['title'], null, $_POST['description'], NULL,
+					'0', time(), $_POST['pic'], null);
+				header("Content-type: application/json");
+				print(json_encode($inspiration->getJSON()));
+				exit();
+			}
+			else if(!empty($_POST['title'])&&!empty($_POST['description'])
+				&&!empty($_POST['vid'])){
+				$inspiration = inspiration::createInspiration(NULL, $_POST['userid'], 
+					$_POST['title'], null, $_POST['description'], NULL,
+					'0', time(), NULL, $_POST['vid']);
 				header("Content-type: application/json");
 				print(json_encode($inspiration->getJSON()));
 				exit();

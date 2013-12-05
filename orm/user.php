@@ -7,23 +7,22 @@ class user{
 	private $level;
 	private $description;
 	private $votes;
-	private $votes_influence;
 	private $email;
 
 	//construct new user with all fields
-	private function __construct($id, $username, $password, $level, $description, $votes, $votes_influence, $email){
+	private function __construct($id, $username, $password, $level, $description, $votes, $email){
 		$this->id = $id;
 		$this->username = $username;
 		$this->password = $password;
 		$this->level = $level;
 		$this->description = $description;
 		$this->votes = $votes;
-		$this->votes_influence = $votes_influence;
 		$this->email = $email;
 	}
 
 	public static function findByName($name){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
+		or die ("I cannot connect to the database.");
 		$query = "SELECT id FROM users WHERE name = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $name);
@@ -41,20 +40,21 @@ class user{
 	}
 
 	//create new user
-	public static function createUser($id, $username, $password, $level, $description, $votes, $votes_influence, $email){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
-		$query = "INSERT INTO users (id, name, pass, level, description, votes, votes_influence, email) VALUES(
-			?,?,?,?,?,?,?,?)";
+	public static function createUser($id, $username, $password, $level, $description, $votes, $email){
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
+		or die ("I cannot connect to the database.");
+		$query = "INSERT INTO users (id, name, pass, level, description, votes, email) VALUES(
+			?,?,?,?,?,?,?)";
 		try{
 			$prep = $mysqli->prepare($query);
-			$prep->bind_param('ssssssss', $id, $username, $password, $level, $description, $votes, $votes_influence, $email);
+			$prep->bind_param('sssssss', $id, $username, $password, $level, $description, $votes, $email);
 			if($prep->execute()){
 				$id = $mysqli->insert_id;
-				return new User($id, $username, $password, $level, $description, $votes, $votes_influence, $email);
+				return new User($id, $username, $password, $level, $description, $votes, $email);
 			}
 			return null;
 		}
-		catch(PDOException $pdo){
+		catch($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 			die("failed to run query");
 		}
@@ -64,7 +64,8 @@ class user{
 	//given an id return the user
 	//useful as a call to return the correct user from other functions
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
+		or die ("I cannot connect to the database.");
 		$query = "SELECT * FROM users WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
@@ -79,17 +80,18 @@ class user{
 		}
 		$user_info = $result->fetch_array();
 		return new User($user_info['id'], $user_info['name'], $user_info['pass'], $user_info['level'],
-			$user_info['description'], $user_info['votes'], $user_info['votes_influence'], $user_info['email']);
+			$user_info['description'], $user_info['votes'], $user_info['email']);
 		}
 		return null;
 	}
 
 	//general update for whatever fields were input
 	public function update(){
-		$mysqli = new mysqli("localhost:3306", "root", "", "nu");
-		$query = "UPDATE users SET username = ?, password = ?, level = ?, description = ?, votes = ?,  votes_influence = ?, email = ? WHERE id = ?";
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
+		or die ("I cannot connect to the database.");
+		$query = "UPDATE users SET username = ?, password = ?, level = ?, description = ?, votes = ?, email = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);
-		$prep->bind_param('ssssssss', $this->username, $this->password, $this->level, $this->description, $this->votes, $this->votes_influence, $this->email, $this->id);
+		$prep->bind_param('sssssss', $this->username, $this->password, $this->level, $this->description, $this->votes, $this->email, $this->id);
 		$prep->execute();
 		$result = $prep->get_result();
 		if($mysqli->error){
@@ -108,7 +110,6 @@ class user{
 		$json_rep['level'] = $this->level;
 		$json_rep['description'] = $this->description;
 		$json_rep['votes'] = $this->votes;
-		$json_rep['votes_influence'] = $this->votes_influence;
 		$json_rep['email'] = $this->email;
 		return $json_rep;
 	}

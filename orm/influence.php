@@ -23,7 +23,7 @@ class influence{
 	}
 
 	public static function createInfluence($id, $userid, $ideaid, $title, $description, $pics_ref, $votes, $type, $time){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "INSERT INTO influence (id, userid, ideaid, title, description, pics_ref, votes, type, time) VALUES 
 		(?,?,?,?,?,?,?,?,?)";
 		$prep = $mysqli->prepare($query);
@@ -37,7 +37,7 @@ class influence{
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT * FROM influence WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
@@ -58,7 +58,7 @@ class influence{
 	}
 
 	public static function findWinner($ideaid, $type){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY votes desc";
 		$influences = array();
 		for($i=0; $i<$type; $i++){
@@ -77,7 +77,7 @@ class influence{
 	}
 
 	public static function findByRecentIdea($ideaid, $type, $start){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY time desc";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $ideaid, $type);
@@ -103,7 +103,7 @@ class influence{
 	if there are no empty numbers it won't run because the blacklist is the size of the
 	results array.*/
 	public static function findByVoteIdea($ideaid, $type, $start, $votedBlackList){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM influence WHERE ideaid = ? AND type = ? ORDER BY votes desc";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $ideaid, $type);

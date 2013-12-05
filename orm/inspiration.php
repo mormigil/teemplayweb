@@ -27,7 +27,7 @@ class inspiration{
 	private function upload($file){
 		error_reporting(E_ALL);
 		ini_set("display_errors", 1);
-		$target = "C:/wamp/www/teemplayweb/uploads/";
+		$target = "C:/wamp/www/teemplay_web/uploads/";
 		$filehash = md5_file($file['tmp_name']);
 		$name = $filehash . basename($file['name']);
 		$target = $target . $name;
@@ -44,7 +44,7 @@ class inspiration{
 
 	public static function createInspiration($id, $userid, $title, $tweet, $description, $url,
 		$votes, $time, $pic, $vid){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		if($pic){
 			$pic = inspiration::upload($pic);
 		}
@@ -65,7 +65,7 @@ class inspiration{
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT * FROM inspirations WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
@@ -88,7 +88,7 @@ class inspiration{
 	}
 
 	public static function findOld($start){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM inspirations ORDER BY time";
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
@@ -106,7 +106,7 @@ class inspiration{
 	}
 
 	public static function findNew($start){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM inspirations ORDER BY time desc";
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
@@ -124,7 +124,7 @@ class inspiration{
 	}
 
 	public static function findPopular($start){
-		$mysqli = new myslqi("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM inspirations ORDER BY votes";
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
@@ -152,7 +152,7 @@ class inspiration{
 	}
 
 	public function update(){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "UPDATE inspirations SET userid = ?, title = ?, tweet = ?, description = ?, 
 			url = ?, votes = ?, time = ?, pic = ?, vid = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);

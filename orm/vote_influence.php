@@ -17,7 +17,7 @@ class vote_influence{
 	public static function createvote_influence($id, $influenceid, $userid){
 		$vote_influence = vote_influence::findByInfluenceAndUser($influenceid, $userid);
 		if(empty($vote_influence)){
-			$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+			$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 			$query = "INSERT INTO vote_influence (id, influenceid, userid) VALUES(?,?,?)";
 			try{
 				$prep = $mysqli->prepare($query);
@@ -75,7 +75,7 @@ class vote_influence{
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT * FROM vote_influence WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
@@ -95,7 +95,7 @@ class vote_influence{
 	}
 
 	public static function findByUser($userid){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM vote_influence WHERE userid = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $userid);
@@ -121,7 +121,7 @@ class vote_influence{
 	}
 
 	public static function findByInfluence($influenceid){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM vote_influence WHERE influenceid = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $influenceid);
@@ -147,7 +147,7 @@ class vote_influence{
 	}
 
 	public static function findByInfluenceAndUser($influenceid, $userid){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM vote_influence WHERE influenceid = ? AND userid = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $influenceid, $userid);
@@ -169,7 +169,7 @@ class vote_influence{
 
 
 	public function delete(){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "DELETE FROM vote_influence WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $this->id);

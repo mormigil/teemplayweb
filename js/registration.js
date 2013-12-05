@@ -3,7 +3,7 @@ $(document).on('click', '#registration', function(){
 		type: 'POST',
 		url: 'users.php',
 		data: {username: $('#username').val(), password: $('#password').val(), email:
-		$('#email').val(), level: '1', description: "", votes: '0', votes_influence: '0'},
+		$('#email').val(), level: '1', description: "", votes: '0'},
 		dataType: 'json',
 		success: function(data){
 			alert("ran through");

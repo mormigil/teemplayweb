@@ -19,7 +19,7 @@ class vote{
 	public static function createVote($id, $linkedid, $userid, $type){
 		$vote = vote::findByIdeaAndUser($linkedid, $userid, $type);
 		if(empty($vote)){
-			$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+			$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 			$query = "INSERT INTO vote (id, linkedid, userid, type) VALUES(?,?,?,?)";
 			try{
 				$prep = $mysqli->prepare($query);
@@ -82,7 +82,7 @@ class vote{
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT * FROM vote WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
@@ -103,7 +103,7 @@ class vote{
 	}
 
 	public static function findByUser($userid, $type){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM vote WHERE userid = ? AND type = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $userid, $type);
@@ -129,7 +129,7 @@ class vote{
 	}
 
 	public static function findByIdea($linkedid, $type){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM vote WHERE linkedid = ? AND type = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $linkedid, $type);
@@ -155,7 +155,7 @@ class vote{
 	}
 
 	public static function findByIdeaAndUser($linkedid, $userid, $type){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM vote WHERE linkedid = ? AND userid = ? AND type = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('sss', $linkedid, $userid, $type);
@@ -177,7 +177,7 @@ class vote{
 
 
 	public function delete(){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "DELETE FROM vote WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $this->id);

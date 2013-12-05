@@ -22,9 +22,6 @@ require("loggedin.php");
             <form enctype="multipart/form-data">
                 <input type="text" name="title" value="">
                 <br><br>
-                Tweet:<br>
-                <input type="text" name="tweet" value="">
-                <br><br>
                 Description:<br>
                 <textarea rows = "8" cols = "30" name = "description">Describe your game here</textarea>
                 <br><br>

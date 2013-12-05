@@ -1,6 +1,7 @@
 <?php
 require_once("orm/user.php");
 require("phpass/PasswordHash.php");
+ini_set('error_reporting', E_ALL);
 /*If I am getting a user then either I want to display that user's
 information - read or delete their information - delete*/
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
@@ -41,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		}
 	} else {
 		$username = substr($_SERVER['PATH_INFO'], 1);
-		$user = user::findByName($_GET['username']);
+		$user = user::findByID(username);
 		if(is_null($user)){
 			header("HTTP/1.1 400 Bad Request");
 			print("user name does not exist");
@@ -115,8 +116,7 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		}
 		if(strlen($hash)>=20){
 		$user = user::createUser(NULL, $_POST['username'], $hash, $_POST['level'], 
-			$_POST['description'], $_POST['votes'], $_post['votes_influence'],
-			$_POST['email']);
+			$_POST['description'], $_POST['votes'], $_POST['email']);
 		header("Content-type: application/json");
 		print(json_encode($user->getJSON()));
 		exit();

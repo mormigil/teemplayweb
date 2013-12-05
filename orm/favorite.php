@@ -17,7 +17,7 @@ class favorite{
 	public static function createFavorite($id, $inspirationid, $userid){
 		$favorite = favorite::findByInspirationsAndUser($inspirationid, $userid);
 		if(empty($favorite)){
-			$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+			$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 			$query = "INSERT INTO favorite (id, inspirationid, userid) VALUES(?,?,?)";
 			try{
 				$prep = $mysqli->prepare($query);
@@ -75,7 +75,7 @@ class favorite{
 	}
 
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT * FROM favorite WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
@@ -95,7 +95,7 @@ class favorite{
 	}
 
 	public static function findByUser($userid){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM favorite WHERE userid = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $userid);
@@ -121,7 +121,7 @@ class favorite{
 	}
 
 	public static function findByInspirations($inspirationid){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM favorite WHERE inspirationid = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $inspirationid);
@@ -147,7 +147,7 @@ class favorite{
 	}
 
 	public static function findByInspirationsAndUser($inspirationid, $userid){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT id FROM favorite WHERE inspirationid = ? AND userid = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $inspirationid, $userid);
@@ -169,7 +169,7 @@ class favorite{
 
 
 	public function delete(){
-		$mysqli = new mysqli("localhost:3306", "root", "", "teemplayweb");
+		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "DELETE FROM favorite WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $this->id);
