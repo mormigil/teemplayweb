@@ -29,7 +29,6 @@ class user{
 		$prep->execute();
 		$prep->bind_result($id);
 		while($prep->fetch()){
-			print_r($id);
 			$user = User::findByID($id);
 			return $user;
 		}
@@ -55,22 +54,20 @@ class user{
 	//given an id return the user
 	//useful as a call to return the correct user from other functions
 	public static function findByID($id){
-		$mysqli = new mysqli("localhost", "root", "", "teemplay_web")
+		$variables = array();
+		$data = array();
+		$mysqli = new mysqli("localhost", "mormigil", "", "teemplay_web")
 		or die ("I cannot connect to the database.");
 		$query = "SELECT * FROM users WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
 		$prep->execute();
-		$result = $prep->result_metadata();
+		$prep->bind_result($id, $name, $pass, $level, $descr, $votes, $email);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		print_r($result);
-		if($result){
-			$user_info = $result->fetch_field();
-			printf("Fieldname: %s\n", $user_info->id);
-			//return new User($user_info['id'], $user_info['name'], $user_info['pass'], $user_info['level'],
-			//	$user_info['description'], $user_info['votes'], $user_info['email']);
+		while($prep->fetch()){
+			return new User($id, $name, $pass, $level, $descr, $votes, $email);
 		}
 		return null;
 	}

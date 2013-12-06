@@ -42,17 +42,17 @@ class influence{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id, $userid, $ideaid, $title, $description
+			$pics_ref, $votes, $type, $time);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-		if($result->num_rows == 0){
-			return null;
-		}
-		$influence_info = $result->fetch_array();
-		return new Influence($influence_info['id'], $influence_info['userid'], $influence_info['ideaid'], $influence_info['title'],
-			$influence_info['description'], $influence_info['pics_ref'], $influence_info['votes'], $influence_info['type'], $influence_info['time']);
+		while($prep->fetch()){
+			if(empty($id)){
+				return null;
+			}
+			return new Influence($id, $userid, $ideaid, $title, $description
+				$pics_ref, $votes, $type, $time);
 		}
 		return null;
 	}
@@ -65,11 +65,10 @@ class influence{
 			$prep = $mysqli->prepare($query);
 			$prep->bind_param('ss', $ideaid, $i);
 			$prep->execute();
-			$result = $prep->get_result();
-			if($result){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$influences[] = influence::findByID($next_row[0]);
+			$prep->bind_result($id);
+			while($prep->fetch()){
+				if($id){
+					$influences[] = influence::findByID($id);
 				}
 			}
 		}
@@ -82,14 +81,11 @@ class influence{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $ideaid, $type);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		$influences = array();
-		if($result){
-			for($i=$start;$i<($start+10);$i++){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$influences[] = influence::findByID($next_row[0]);
-				}
+		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+			if($id){
+				$influences[] = influence::findByID($id);
 			}
 		}
 		return $influences;
@@ -108,54 +104,38 @@ class influence{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $ideaid, $type);
 		$prep->execute();
-		$result = $prep->get_result();
-		$influences = $result->num_rows;
+		$prep->bind_result($id);
+		$prep->store_result();
+		$influences = $prep->num_rows;
 		$ideas = array();
-		if($result){
-			for($i=$start;$i<($start+3);$i++){
-				$choice = rand(1, 100);
-				$choice = ceil(($choice*$choice/10000)*($influences));
-				/*print($choice);
-				print($votedBlackList[0]);
-				while(in_array($choice, $votedBlackList)){\
-					if($influences==count($votedBlackList)){
-						break;
+		for($i=$start;$i<($start+3)&&$prep->fetch();$i++){
+			$choice = rand(1, 100);
+			$choice = ceil(($choice*$choice/10000)*($influences));
+			$result->data_seek($choice-1);
+			if($id){
+				$k = 0;
+				while(in_array($id, $votedBlackList)){
+					if($influences == count($votedBlackList)){
+						return $ideas;
 					}
 					if($choice<$influences){
 						$choice++;
 					}
 					else{
-						$choice = 0;
+						$choice = 1;
 					}
-				}*/
-				$result->data_seek($choice-1);
-				$row = $result->fetch_row();
-				if($row){
-					$id = $row[0];
-					$k = 0;
-					while(in_array($id, $votedBlackList)){
-						if($influences == count($votedBlackList)){
-							return $ideas;
-						}
-						if($choice<$influences){
-							$choice++;
-						}
-						else{
-							$choice = 1;
-						}
-						$result->data_seek($choice-1);
-						$row = $result->fetch_row();
-						if($row){
-							$id = $row[0];
-						}
-						if($k>4){
-							break;
-						}
-						$k++;
+					$result->data_seek($choice-1);
+					$row = $result->fetch_row();
+					if($row){
+						$id = $row[0];
 					}
-					$ideas[] = influence::findByID($row[0]);
-					$votedBlackList[] = $row[0];
+					if($k>4){
+						break;
+					}
+					$k++;
 				}
+				$ideas[] = influence::findByID($row[0]);
+				$votedBlackList[] = $row[0];
 			}
 		}
 		return $ideas;
@@ -166,14 +146,12 @@ class influence{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s,s', $ideaid, $type);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		$ideas = array();
-		if($result){
-			for($i=$start;$i<($start+10);$i++){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$ideas[] = influence::findByID($next_row[0]);
-				}
+		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+			$next_row = $result->fetch_row();
+			if($next_row){
+				$ideas[] = influence::findByID($next_row[0]);
 			}
 		}
 	}
@@ -185,12 +163,10 @@ class influence{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('sssssssss', $this->userid, $this->ideaid, $this->title, $this->description, 
 			$this->pics_ref, $this->votes, $this->type, $this->time, $this->id);
-		$prep->execute();
-		$result = $prep->get_result();
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		return $result;
+		return $prep->execute();
 	}
 
 	public function getType(){

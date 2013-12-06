@@ -44,14 +44,13 @@ class favorite{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $inspirationid);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($count);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-			$count = $result->fetch_array();
+		while($prep->fetch()){
 			$prep2 = $mysqli->prepare($query2);
-			$prep2->bind_param('ss', $count[0], $inspirationid);
+			$prep2->bind_param('ss', $count, $inspirationid);
 			$prep2->execute();
 		}
 	}
@@ -62,15 +61,14 @@ class favorite{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $userid);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($count);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-			$count = $result->fetch_array();
-			$prep = $mysqli->prepare($query2);
-			$prep->bind_param('ss', $count[0], $userid);
-			$prep->execute();
+		while($prep->fetch()){
+			$prep2 = $mysqli->prepare($query2);
+			$prep2->bind_param('ss', $count, $userid);
+			$prep2->execute();
 		}
 	}
 
@@ -80,16 +78,15 @@ class favorite{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id, $inspirationid, $userid);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-		if($result->num_rows == 0){
-			return null;
-		}
-		$favorite_info = $result->fetch_array();
-		return new favorite($favorite_info['id'], $favorite_info['inspirationid'], $favorite_info['userid']);
+		while($prep->fetch()){
+			if(empty($id)){
+				return null;	
+			}
+			return new favorite($id, $inspirationid, $userid);
 		}
 		return null;
 	}
@@ -100,17 +97,16 @@ class favorite{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $userid);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
 		$favorites = array();
-		if($result){
+		while($prep->fetch()){
 			//go until there are no more favorites for the user
 			while(true){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$favorites[] = favorite::findByID($next_row[0]);
+				if($id){
+					$favorites[] = favorite::findByID($id);
 				}
 				else{
 					break;
@@ -126,17 +122,16 @@ class favorite{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $inspirationid);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
 		$favorites = array();
-		if($result){
+		while($prep->fetch()){
 			//go until there are no more favorites for the inspirations
 			while(true){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$favorites[] = favorite::findByID($next_row[0]);
+				if($id){
+					$favorites[] = favorite::findByID($id);
 				}
 				else{
 					break;
@@ -152,16 +147,15 @@ class favorite{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $inspirationid, $userid);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-			if($result->num_rows == 0){
+		while($prep->fetch()){
+			if(empty($id)){
 				return null;
 			}
-			$id = $result->fetch_row();
-			$favorite = favorite::findByID($id[0]);
+			$favorite = favorite::findByID($id);
 			return $favorite;
 		}
 		return null;
@@ -173,9 +167,7 @@ class favorite{
 		$query = "DELETE FROM favorite WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $this->id);
-		$prep->execute();
-		$result = $prep->get_result();
-		return $result;
+		return $prep->execute();;
 	}
 
 	public function getJSON(){

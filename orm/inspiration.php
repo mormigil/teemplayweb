@@ -70,19 +70,12 @@ class inspiration{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id, $userid, $title, $tweet, $description, $url, $votes, $time, $pic, $vid);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-		if($result->num_rows == 0){
-			return null;
-		}
-		$inspiration_info = $result->fetch_array();
-		return new Inspiration($inspiration_info['id'], $inspiration_info['userid'], 
-			$inspiration_info['title'], $inspiration_info['tweet'],	$inspiration_info['description'],
-			$inspiration_info['url'], $inspiration_info['votes'], $inspiration_info['time'], 
-			$inspiration_info['pic'], $inspiration_info['vid']);
+		while($prep->fetch()){
+			return new Inspiration($id, $userid, $title, $tweet, $description, $url, $votes, $time, $pic, $vid);
 		}
 		return null;
 	}

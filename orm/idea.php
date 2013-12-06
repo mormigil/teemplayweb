@@ -52,19 +52,16 @@ class idea{
 		}
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		$ideas = array();
-		if($result){
-			for($i=$start;$i<($start+10);$i++){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$idea = idea::findByID($next_row[0]);
-					if($idea->getTimeLeft($idea->getStage())>0){
-						$ideas[] = $idea;
-					}
-					else{
-						$idea->chgStage();
-					}
+		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+			if($id){
+				$idea = idea::findByID($id);
+				if($idea->getTimeLeft($idea->getStage())>0){
+					$ideas[] = $idea;
+				}
+				else{
+					$idea->chgStage();
 				}
 			}
 		}
@@ -81,19 +78,16 @@ class idea{
 		}
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		$ideas = array();
-		if($result){
-			for($i=$start;$i<($start+10);$i++){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$idea = idea::findByID($next_row[0]);
-					if($idea->getTimeLeft($idea->getStage())>0){
-						$ideas[] = $idea;
-					}
-					else{
-						$idea->chgStage();
-					}
+		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+			if($id){
+				$idea = idea::findByID($id);
+				if($idea->getTimeLeft($idea->getStage())>0){
+					$ideas[] = $idea;
+				}
+				else{
+					$idea->chgStage();
 				}
 			}
 		}
@@ -106,17 +100,12 @@ class idea{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-		if($result->num_rows == 0){
-			return null;
-		}
-		$idea_info = $result->fetch_array();
-		return new Idea($idea_info['id'], $idea_info['userid'], $idea_info['title'], $idea_info['tweet'],
-			$idea_info['description'], $idea_info['genre'], $idea_info['votes'], $idea_info['time'], $idea_info['stage']);
+		while($prep->fetch()){
+			return new Idea($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage);
 		}
 		return null;
 	}
@@ -163,12 +152,10 @@ class idea{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('sssssssss', $this->userid, $this->title, $this->tweet, $this->description, 
 			$this->genre, $this->votes, $this->time, $this->stage, $this->id);
-		$prep->execute();
-		$result = $prep->get_result();
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		return $result;
+		return $prep->execute();
 	}
 
 	public function getTitle(){
