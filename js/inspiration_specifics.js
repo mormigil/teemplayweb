@@ -38,13 +38,13 @@ function appendVote(data){
 	$("#actions").append("<div class = 'voteArea'><button value = '"+data['id']+
 	"' class = 'vote' id = 'vote"+data["id"]+"'>"+"vote</button>");
 
-	if(isset(data['pic'])){
+	if(typeof(data['pic'])!="undefined"&&data['pic']!=null){
 		//add an image with the local url from uploaded
 	}
-	else if(isset(data['vid'])){
+	else if(typeof(data['vid'])!="undefined"&&data['vid']!=null){
 		//add a video with the local url
 	}
-	else if(isset(data['url'])){
+	else if(typeof(data['url'])&&data['url']!=null){
 		//add image from the url as main image
 	}
 	else{
@@ -60,13 +60,13 @@ function appendVoted(data){
 
 	$("#actions").append("<div class = 'voteArea'><button value = '"+data['id']+
 	"' class = 'voted' id = 'voted"+data["id"]+"'>"+"voted</button>");
-	if(isset(data['pic'])){
+	if(typeof(data['pic'])!="undefined"&&data['pic']!=null){
 		//add an image with the local url from uploaded
 	}
-	else if(isset(data['vid'])){
+	else if(typeof(data['vid'])!="undefined"&&data['vid']!=null){
 		//add a video with the local url
 	}
-	else if(isset(data['url'])){
+	else if(typeof(data['url'])&&data['url']!=null){
 		//add image from the url as main image
 	}
 	else{

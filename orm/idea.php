@@ -23,7 +23,7 @@ class idea{
 	}
 
 	public static function createIdea($id, $userid, $title, $tweet, $description, $genre, $votes, $time, $stage){
-		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "INSERT INTO ideas (id, userid, title, tweet, description, genre, votes, time, stage) VALUES(
 			?,?,?,?,?,?,?,?,?)";
 		try{
@@ -43,7 +43,7 @@ class idea{
 	}
 
 	public static function findExpiring($start, $current){
-		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		if($current){
 			$query = "SELECT id FROM ideas WHERE stage != 0 ORDER BY time";
 		}
@@ -54,7 +54,8 @@ class idea{
 		$prep->execute();
 		$prep->bind_result($id);
 		$ideas = array();
-		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+		for($i=$start;$i<($start+10);$i++){
+			if($prep->fetch()){
 			if($id){
 				$idea = idea::findByID($id);
 				if($idea->getTimeLeft($idea->getStage())>0){
@@ -64,12 +65,12 @@ class idea{
 					$idea->chgStage();
 				}
 			}
-		}
+		}}
 		return $ideas;
 	}
 
 	public static function findRecent($start, $current){
-		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		if($current){
 			$query = "SELECT id FROM ideas WHERE stage != 0 ORDER BY time desc";
 		}
@@ -95,7 +96,7 @@ class idea{
 	}
 
 	public static function findByID($id){
-		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "SELECT * FROM ideas WHERE id = ?";
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
@@ -146,7 +147,7 @@ class idea{
 
 	//update broken needs to be checked
 	public function update(){
-		$mysqli = new myslqi("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web");
 		$query = "UPDATE ideas SET userid = ?, title = ?, tweet = ?, description = ?, genre = ?,  
 			votes = ?, time = ?, stage = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);

@@ -51,14 +51,13 @@ class vote{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $linkedid);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($count);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-			$count = $result->fetch_array();
+		while($prep->fetch()){
 			$prep2 = $mysqli->prepare($query2);
-			$prep2->bind_param('ss', $count[0], $linkedid);
+			$prep2->bind_param('ss', $count, $linkedid);
 			$prep2->execute();
 		}
 	}
@@ -69,14 +68,13 @@ class vote{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $userid);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($count);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-			$count = $result->fetch_array();
-			$prep = $mysqli->prepare($query2);
-			$prep->bind_param('ss', $count[0], $userid);
+		while($prep->fetch()){
+			$prep2 = $mysqli->prepare($query2);
+			$prep2->bind_param('ss', $count, $userid);
 			$prep->execute();
 		}
 	}
@@ -87,17 +85,15 @@ class vote{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('s', $id);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id, $linkedid, $userid, $type);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-		if($result->num_rows == 0){
-			return null;
-		}
-		$vote_info = $result->fetch_array();
-		return new vote($vote_info['id'], $vote_info['linkedid'], $vote_info['userid'], 
-			$vote_info['type']);
+		if($prep->fetch()){
+			if(empty($id)){
+				return null;
+			}
+			return new vote($id, $linkedid, $userid, $type);
 		}
 		return null;
 	}
@@ -108,22 +104,14 @@ class vote{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $userid, $type);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
 		$votes = array();
-		if($result){
 			//go until there are no more votes for the user
-			while(true){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$votes[] = vote::findByID($next_row[0]);
-				}
-				else{
-					break;
-				}
-			}
+		while($prep->fetch()){
+			$votes[] = vote::findByID($id);
 		}
 		return $votes;
 	}
@@ -134,22 +122,14 @@ class vote{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ss', $linkedid, $type);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
 		$votes = array();
-		if($result){
-			//go until there are no more votes for the idea
-			while(true){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$votes[] = vote::findByID($next_row[0]);
-				}
-				else{
-					break;
-				}
-			}
+			//go until there are no more votes for the user
+		while($prep->fetch()){
+			$votes[] = vote::findByID($id);
 		}
 		return $votes;
 	}
@@ -160,16 +140,19 @@ class vote{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('sss', $linkedid, $userid, $type);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		if($mysqli->error){
 			printf("Errormessage: %s\n", $mysqli->error);
 		}
-		if($result){
-			if($result->num_rows == 0){
+		if($prep->fetch()){
+			if(empty($id)){
 				return null;
 			}
-			$id = $result->fetch_row();
-			$vote = vote::findByID($id[0]);
+			$vote = vote::findByID($id);
+			//if there were two matches return error!
+			if($prep->fetch()){
+				return null;
+			}
 			return $vote;
 		}
 		return null;

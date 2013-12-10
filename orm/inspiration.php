@@ -85,14 +85,11 @@ class inspiration{
 		$query = "SELECT id FROM inspirations ORDER BY time";
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		$inspirations = array();
-		if($result){
-			for($i=$start;$i<($start+10);$i++){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$inspirations[] = inspiration::findByID($next_row[0]);
-				}
+		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+			if($id){
+				$inspirations[] = inspiration::findByID($id);
 			}
 		}
 		return $inspirations;
@@ -103,14 +100,11 @@ class inspiration{
 		$query = "SELECT id FROM inspirations ORDER BY time desc";
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		$inspirations = array();
-		if($result){
-			for($i=$start;$i<($start+10);$i++){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$inspirations[] = inspiration::findByID($next_row[0]);
-				}
+		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+			if($id){
+				$inspirations[] = inspiration::findByID($id);
 			}
 		}
 		return $inspirations;
@@ -121,14 +115,11 @@ class inspiration{
 		$query = "SELECT id FROM inspirations ORDER BY votes";
 		$prep = $mysqli->prepare($query);
 		$prep->execute();
-		$result = $prep->get_result();
+		$prep->bind_result($id);
 		$inspirations = array();
-		if($result){
-			for($i=$start;$i<($start+10);$i++){
-				$next_row = $result->fetch_row();
-				if($next_row){
-					$inspirations[] = inspiration::findByID($next_row[0]);
-				}
+		for($i=$start;$i<($start+10)&&$prep->fetch();$i++){
+			if($id){
+				$inspirations[] = inspiration::findByID($id);
 			}
 		}
 		return $inspirations;
@@ -151,12 +142,7 @@ class inspiration{
 		$prep = $mysqli->prepare($query);
 		$prep->bind_param('ssssssssss', $this->userid, $this->title, $this->tweet, $this->description, 
 			$this->url, $this->votes, $this->time, $this->pic, $this->vid, $this->id);
-		$prep->execute();
-		$result = $prep->get_result();
-		if($mysqli->error){
-			printf("Errormessage: %s\n", $mysqli->error);
-		}
-		return $result;
+		return $prep->execute;
 	}
 
 	public function getJSON(){

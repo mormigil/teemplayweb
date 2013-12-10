@@ -21,7 +21,7 @@ class user{
 	}
 
 	public static function findByName($name){
-		$mysqli = new mysqli("localhost", "root", "", "teemplay_web")
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
 		or die ("I cannot connect to the database.");
 		$query = "SELECT id FROM users WHERE name = ?";
 		$prep = $mysqli->prepare($query);
@@ -37,7 +37,7 @@ class user{
 
 	//create new user
 	public static function createUser($id, $username, $password, $level, $description, $votes, $email){
-		$mysqli = new mysqli("localhost", "root", "", "teemplay_web")
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
 		or die ("I cannot connect to the database.");
 		$query = "INSERT INTO users (id, name, pass, level, description, votes, email) VALUES(
 			?,?,?,?,?,?,?)";
@@ -56,7 +56,7 @@ class user{
 	public static function findByID($id){
 		$variables = array();
 		$data = array();
-		$mysqli = new mysqli("localhost", "mormigil", "", "teemplay_web")
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
 		or die ("I cannot connect to the database.");
 		$query = "SELECT * FROM users WHERE id = ?";
 		$prep = $mysqli->prepare($query);
@@ -74,7 +74,7 @@ class user{
 
 	//general update for whatever fields were input
 	public function update(){
-		$mysqli = new mysqli("localhost", "root", "", "teemplay_web")
+		$mysqli = new mysqli("localhost", "teemplay_morm", "x1Zh8T1VbhX7", "teemplay_web")
 		or die ("I cannot connect to the database.");
 		$query = "UPDATE users SET username = ?, password = ?, level = ?, description = ?, votes = ?, email = ? WHERE id = ?";
 		$prep = $mysqli->prepare($query);
